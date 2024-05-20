@@ -1,0 +1,14 @@
+import express from "express";
+import * as userController from "../controllers/users";
+
+const router = express.Router();
+
+router.get("/", userController.getAuthenticatedUser);
+router.post("/signup", userController.signUp);
+router.post("/login", userController.login);
+router.post("/logout", userController.logout);
+
+router.post("/google-login", userController.googleLogin);
+router.post("/google-signup", userController.googleSignUp);
+
+export default router;

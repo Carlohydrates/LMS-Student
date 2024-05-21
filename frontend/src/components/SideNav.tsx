@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useContext, useState } from "react";
 import { MoreVertical, PanelLeftClose, PanelLeftOpen } from "lucide-react";
 import SideNavItem from "./SideNavItem";
@@ -30,7 +31,6 @@ const SideNav = () => {
   const [expanded, setExpanded] = useState<boolean>(false);
   const [activeListItem, setActiveListItem] = useState<number>(activeItemId);
   const { user } = useAuthContext();
-  const userInfo = user.user;
   console.log(user);
   return (
     <nav
@@ -91,7 +91,7 @@ const SideNav = () => {
               `}
       >
         <img
-          src={`https://ui-avatars.com/api/?background=a1d6d9&color=000000&bold=true&name=${userInfo.username}`}
+          src={`https://ui-avatars.com/api/?background=a1d6d9&color=000000&bold=true&name=${user.username}`}
           alt=""
           className="w-10 h-10 rounded-md"
         />
@@ -104,9 +104,9 @@ const SideNav = () => {
               `}
         >
           <div className="leading-4">
-            <h4 className="font-semibold text-snow-600">{userInfo.username}</h4>
+            <h4 className="font-semibold text-snow-600">{user.username}</h4>
             <span className="poppins-light-italic text-xs text-snow-600">
-              {userInfo.email}
+              {user.email}
             </span>
           </div>
           <MoreVertical size={20} />

@@ -31,15 +31,13 @@ export const useLogin = () => {
         throw new Error(errorData.error);
       }
 
-      const json = await response.json();
-
-      console.log(json);
+      const { user, token } = await response.json();
 
       // Save token to local storage
-      localStorage.setItem("user", JSON.stringify(json));
+      localStorage.setItem("user", token);
 
       // Update the auth context
-      dispatch({ type: "LOGIN", payload: json });
+      dispatch({ type: "LOGIN", payload: user });
 
       navigate("/dashboard");
 

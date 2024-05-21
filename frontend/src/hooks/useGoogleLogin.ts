@@ -53,6 +53,8 @@ export const useGoogleLogin = () => {
         const { user } = await response.json();
         dispatch({ type: "LOGIN", payload: user });
 
+        console.log("User: ", user);
+
         // Set google credential as token
         localStorage.setItem("user", credentials.credential!);
 

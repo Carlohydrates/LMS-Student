@@ -104,9 +104,13 @@ export const login: RequestHandler<
       throw createHttpError(401, "Invalid credentials");
     }
     // gen jwt
-    const token = jwt.sign({ user: user }, process.env.JWT_SECRET!, {
-      expiresIn: "1d",
-    });
+    const token = jwt.sign(
+      { name: user.username, email: user.email },
+      process.env.JWT_SECRET!,
+      {
+        expiresIn: "1d",
+      }
+    );
 
     res.status(201).json({ user, token });
   } catch (error) {
@@ -130,13 +134,13 @@ export const googleSignUp: RequestHandler<
 
   try {
     if (!email) {
-      throw createHttpError(400, "Parameters missing");
+      throw createHttpError(400, "Parameters missing.");
     }
 
     const existingEmail = await UserModel.findOne({ email: email }).exec();
 
     if (existingEmail) {
-      throw createHttpError(409, "Email already in use");
+      throw createHttpError(409, "Google account already registered.");
     }
 
     const newUser = await UserModel.create({

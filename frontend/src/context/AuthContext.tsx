@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-// import { jwtDecode } from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
 import React, {
   FC,
   useReducer,
@@ -20,6 +20,11 @@ interface AuthAction {
 interface AuthContextProps {
   user: any;
   dispatch: React.Dispatch<AuthAction>;
+}
+
+interface decodedJWT {
+  email: string;
+  name: string;
 }
 
 export const AuthContext = createContext<AuthContextProps | undefined>(
@@ -57,12 +62,15 @@ export const AuthContextProvider: FC<AuthContextProviderProps> = ({
   });
 
   useEffect(() => {
-    const user: string | null = JSON.parse(
-      localStorage.getItem("user") || "null"
-    );
+    const user: string | null = localStorage.getItem("user") || null;
 
     if (user) {
-      dispatch({ type: "LOGIN", payload: user });
+      console.log("User: ", user);
+      const decodedUser: decodedJWT = jwtDecode<decodedJWT>(user!);
+      console.log("Decoded User: ", decodedUser);
+      const { name: username, email } = decodedUser;
+      const userInfo = { username, email };
+      dispatch({ type: "LOGIN", payload: userInfo });
     }
   }, []);
 

@@ -5,6 +5,8 @@ import { useAuthContext } from "./useAuthContext";
 import { useNavigate } from "react-router-dom";
 import { CredentialResponse, googleLogout } from "@react-oauth/google";
 import { jwtDecode } from "jwt-decode";
+import { Slide, ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 interface DataCredentials {
   aud: string;
@@ -46,7 +48,17 @@ export const useGoogleSignup = () => {
         }
       );
       if (response.ok) {
-        // toast to say google user signed up
+        toast.success("Google account registered successfully.", {
+          position: "top-center",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+          transition: Slide,
+        });
         navigate("/login");
       } else {
         setGoogleError("Google Account already Registered.");

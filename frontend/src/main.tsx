@@ -14,33 +14,75 @@ import Login from "./pages/Login.tsx";
 import { AuthContextProvider } from "./context/AuthContext.tsx";
 import SignUp from "./pages/SignUp.tsx";
 import Landing from "./pages/Landing.tsx";
+import { useAuthContext } from "./hooks/useAuthContext.ts";
+import { Navigate } from "react-router-dom";
 
-// import { useAuthContext } from "./hooks/useAuthContext";
+interface RouteProps {
+  children: React.ReactNode;
+}
 
-const App = () => {
-  // const { user } = useAuthContext();
+const PublicRoutes: React.FC<RouteProps> = ({ children }) => {
+  const { user } = useAuthContext();
 
+  if (user) {
+    return <Navigate to="/dashboard" />;
+  }
+
+  return children;
+};
+
+const ProtectedRoutes: React.FC<RouteProps> = ({ children }) => {
+  const { user } = useAuthContext();
+
+  if (!user) {
+    return <Navigate to="/login" />;
+  }
+
+  return children;
+};
+
+export const App = () => {
   const router = createBrowserRouter([
     {
       path: "/",
-      element: <Landing />,
+      element: (
+        <PublicRoutes>
+          <Landing />,
+        </PublicRoutes>
+      ),
       errorElement: <NotFoundPage />,
     },
     {
       path: "/login",
-      element: <Login />,
+      element: (
+        <PublicRoutes>
+          <Login />,
+        </PublicRoutes>
+      ),
     },
     {
       path: "/signup",
-      element: <SignUp />,
+      element: (
+        <PublicRoutes>
+          <SignUp />,
+        </PublicRoutes>
+      ),
     },
     {
       path: "/dashboard",
-      element: <Dashboard />,
+      element: (
+        <ProtectedRoutes>
+          <Dashboard />,
+        </ProtectedRoutes>
+      ),
     },
     {
       path: "/courses",
-      element: <Courses />,
+      element: (
+        <ProtectedRoutes>
+          <Courses />,
+        </ProtectedRoutes>
+      ),
     },
     {
       path: "/courses/:id",
@@ -48,15 +90,26 @@ const App = () => {
     },
     {
       path: "/students",
-      element: <Students />,
+      element: (
+        <ProtectedRoutes>
+          <Students />,
+        </ProtectedRoutes>
+      ),
     },
     {
       path: "/grades",
-      element: <Grades />,
+      element: (
+        <ProtectedRoutes>
+          <Grades />,
+        </ProtectedRoutes>
+      ),
     },
   ]);
-
-  return <RouterProvider router={router} />;
+  return (
+    <>
+      <RouterProvider router={router} />
+    </>
+  );
 };
 
 ReactDOM.createRoot(document.getElementById("root")!).render(

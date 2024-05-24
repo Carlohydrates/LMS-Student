@@ -69,5 +69,5 @@ export const useGoogleSignup = () => {
       console.log(error.message);
     }
   };
-  return { googleSignup, googleError };
+  return { googleSignup, googleError, setGoogleError };
 };

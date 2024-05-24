@@ -11,8 +11,15 @@ const SignUpForm = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [username, setUsername] = useState<string>("");
-  const { signup, error, isLoading } = useSignup();
-  const { googleSignup, googleError } = useGoogleSignup();
+  const {
+    signup,
+    error,
+    setError,
+    isLoading,
+    successMessage,
+    setSuccessMessage,
+  } = useSignup();
+  const { googleSignup, googleError, setGoogleError } = useGoogleSignup();
   const signupUser = async (e: FormEvent) => {
     e.preventDefault();
     toast.dismiss();
@@ -30,18 +37,19 @@ const SignUpForm = () => {
     }
   };
 
-  const toastNotification = () => {
-    const toastMessage = error || googleError || null;
-    if (toastMessage) {
-      toast.error(toastMessage);
-    }
-  };
-
   useEffect(() => {
     if (error || googleError) {
-      toastNotification();
+      const toastError = error || googleError;
+      toast.error(toastError);
+      setError(null);
+      setGoogleError("");
     }
-  }, [error, googleError]);
+
+    if (successMessage === "SUCCESS") {
+      toast.success("Sign up successful.");
+      setSuccessMessage("FAIL");
+    }
+  }, [error, googleError, successMessage]);
 
   return (
     <div className="flex lg:w-1/3 lg:h-3/4 shadow-lg shadow-black bg-snow rounded-xl my-auto mx-auto">

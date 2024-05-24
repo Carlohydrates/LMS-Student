@@ -1,13 +1,13 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAuthContext } from "./useAuthContext";
 import { useNavigate } from "react-router-dom";
-import { Slide, ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 export const useSignup = () => {
   const [error, setError] = useState(null);
+  const [successMessage, setSuccessMessage] = useState("FAIL");
   const [isLoading, setIsLoading] = useState<boolean | null>(null);
   const { dispatch } = useAuthContext();
 
@@ -33,22 +33,7 @@ export const useSignup = () => {
         throw new Error(errorData.error);
       }
 
-      toast.success("User signed up successfully!", {
-        position: "top-center",
-        autoClose: 1000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: false,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-        transition: Slide,
-      });
-
       const { user, token } = await response.json();
-
-      // // Save token to local storage
-      // localStorage.setItem("user", token);
 
       // Update the auth context
       dispatch({ type: "LOGIN", payload: user });
@@ -61,5 +46,12 @@ export const useSignup = () => {
       setError(error.message);
     }
   };
-  return { signup, isLoading, error };
+  return {
+    signup,
+    isLoading,
+    error,
+    setError,
+    successMessage,
+    setSuccessMessage,
+  };
 };

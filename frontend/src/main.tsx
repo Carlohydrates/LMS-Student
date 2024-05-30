@@ -6,7 +6,6 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import Dashboard from "./pages/Dashboard.tsx";
 import Courses from "./pages/Courses.tsx";
-import Students from "./pages/Students.tsx";
 import { NotFoundPage } from "./pages/NotFoundPage.tsx";
 import CourseInfo from "./pages/CourseInfo.tsx";
 import Grades from "./pages/Grades.tsx";
@@ -16,6 +15,7 @@ import SignUp from "./pages/SignUp.tsx";
 import Landing from "./pages/Landing.tsx";
 import { useAuthContext } from "./hooks/useAuthContext.ts";
 import { Navigate } from "react-router-dom";
+import { Slide, ToastContainer } from "react-toastify";
 
 interface RouteProps {
   children: React.ReactNode;
@@ -47,7 +47,7 @@ export const App = () => {
       path: "/",
       element: (
         <PublicRoutes>
-          <Landing />,
+          <Landing />
         </PublicRoutes>
       ),
       errorElement: <NotFoundPage />,
@@ -56,7 +56,7 @@ export const App = () => {
       path: "/login",
       element: (
         <PublicRoutes>
-          <Login />,
+          <Login />
         </PublicRoutes>
       ),
     },
@@ -64,7 +64,7 @@ export const App = () => {
       path: "/signup",
       element: (
         <PublicRoutes>
-          <SignUp />,
+          <SignUp />
         </PublicRoutes>
       ),
     },
@@ -72,7 +72,7 @@ export const App = () => {
       path: "/dashboard",
       element: (
         <ProtectedRoutes>
-          <Dashboard />,
+          <Dashboard />
         </ProtectedRoutes>
       ),
     },
@@ -80,7 +80,7 @@ export const App = () => {
       path: "/courses",
       element: (
         <ProtectedRoutes>
-          <Courses />,
+          <Courses />
         </ProtectedRoutes>
       ),
     },
@@ -89,33 +89,37 @@ export const App = () => {
       element: <CourseInfo />,
     },
     {
-      path: "/students",
-      element: (
-        <ProtectedRoutes>
-          <Students />,
-        </ProtectedRoutes>
-      ),
-    },
-    {
       path: "/grades",
       element: (
         <ProtectedRoutes>
-          <Grades />,
+          <Grades />
         </ProtectedRoutes>
       ),
     },
   ]);
-  return (
-    <>
-      <RouterProvider router={router} />
-    </>
-  );
+  return <RouterProvider router={router} />;
 };
 
-ReactDOM.createRoot(document.getElementById("root")!).render(
+const root = ReactDOM.createRoot(
+  document.getElementById("root") as HTMLElement
+);
+root.render(
   <AuthContextProvider>
     <GoogleOAuthProvider clientId={import.meta.env.VITE_CLIENT_ID}>
       <React.StrictMode>
+        <ToastContainer
+          position="top-center"
+          autoClose={2000}
+          hideProgressBar
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="colored"
+          transition={Slide}
+        />
         <App />
       </React.StrictMode>
     </GoogleOAuthProvider>

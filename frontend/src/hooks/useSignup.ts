@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useAuthContext } from "./useAuthContext";
 import { useNavigate } from "react-router-dom";
-import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-toastify";
 
 export const useSignup = () => {
   const [error, setError] = useState(null);
@@ -18,7 +18,7 @@ export const useSignup = () => {
     setError(null);
 
     try {
-      const response = await fetch(`${import.meta.env.VITE_BASE_URL}/signup`, {
+      const response = await fetch(`${import.meta.env.VITE_USER_API}/signup`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -28,19 +28,19 @@ export const useSignup = () => {
 
       if (!response.ok) {
         const errorData = await response.json();
-        setError(errorData.error);
-        setIsLoading(true);
+        toast.error("Error signing up.");
         throw new Error(errorData.error);
+      } else {
+        const { user, token } = await response.json();
+
+        // Update the auth context
+        dispatch({ type: "LOGIN", payload: user });
+
+        navigate("/login");
+        toast.success("Sign up successful.");
+
+        setIsLoading(false);
       }
-
-      const { user, token } = await response.json();
-
-      // Update the auth context
-      dispatch({ type: "LOGIN", payload: user });
-
-      navigate("/login");
-
-      setIsLoading(false);
     } catch (error: any) {
       setIsLoading(true);
       setError(error.message);
@@ -51,7 +51,5 @@ export const useSignup = () => {
     isLoading,
     error,
     setError,
-    successMessage,
-    setSuccessMessage,
   };
 };

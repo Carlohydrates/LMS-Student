@@ -1,6 +1,5 @@
-import Content from "../components/Content";
-import { PageContext } from "../components/Context";
-import Header from "../components/HeaderLoggedIn";
+import { NavContext } from "../context/NavContext";
+import HeaderLoggedIn from "../components/HeaderLoggedIn";
 import SideNav from "../components/SideNav";
 import { useAuthContext } from "../hooks/useAuthContext";
 
@@ -11,13 +10,13 @@ function App() {
   }
   return (
     <div className="flex flex-row w-full">
-      <PageContext.Provider value={"dashboard"}>
+      <NavContext.Provider value={"dashboard"}>
         <SideNav />
-        <div className="flex flex-col w-screen h-screen overflow-hidden">
-          <Header />
-          <Content />
+        <div className="flex flex-col lg:w-screen lg:h-screen overflow-y-auto bg-black_olive-600 pb-20">
+          <HeaderLoggedIn />
+
         </div>
-      </PageContext.Provider>
+      </NavContext.Provider>
     </div>
   );
   //

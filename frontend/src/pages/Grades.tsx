@@ -1,14 +1,17 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import SideNav from "../components/SideNav";
-import Content from "../components/Content";
-import { PageContext } from "../components/Context";
+import { NavContext } from "../context/NavContext";
+import HeaderLoggedIn from "../components/HeaderLoggedIn";
 
 const Grades = () => {
   return (
     <main className="flex flex-row">
-      <PageContext.Provider value={"grades"}>
+      <NavContext.Provider value={"grades"}>
         <SideNav />
-        <Content />
-      </PageContext.Provider>
+        <div className="flex flex-col lg:w-screen lg:h-screen overflow-y-auto bg-black_olive-600 pb-20">
+          <HeaderLoggedIn />
+        </div>
+      </NavContext.Provider>
     </main>
   );
 };

@@ -39,7 +39,7 @@ export const useGoogleLogin = () => {
 
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_BASE_URL}/google-login`,
+        `${import.meta.env.VITE_USER_API}/google-login`,
         {
           method: "POST",
           headers: {

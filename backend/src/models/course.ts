@@ -1,10 +1,15 @@
 import { InferSchemaType, model, Schema } from "mongoose";
+import User from "./user"
 
 const courseSchema = new Schema(
   {
     code: { type: String, required: true, unique: true },
     title: { type: String, required: true, unique: true },
-    text: { type: String, required: true },
+    description: { type: String, required: true },
+    isPublished: { type: Boolean, required: true, default: false },
+    publisher: { type: String, required: true },
+    tier: { type: String, required: true},
+    price: { type: Number, required: false},
   },
   { timestamps: true }
 );

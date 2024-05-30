@@ -4,22 +4,14 @@ import { FormEvent, useEffect, useState } from "react";
 import { useSignup } from "../hooks/useSignup";
 import { GoogleLogin } from "@react-oauth/google";
 import { useGoogleSignup } from "../hooks/useGoogleSignup";
-import { Slide, ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-toastify";
 
 const SignUpForm = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [username, setUsername] = useState<string>("");
-  const {
-    signup,
-    error,
-    setError,
-    isLoading,
-    successMessage,
-    setSuccessMessage,
-  } = useSignup();
-  const { googleSignup, googleError, setGoogleError } = useGoogleSignup();
+  const { signup } = useSignup();
+  const { googleSignup } = useGoogleSignup();
   const signupUser = async (e: FormEvent) => {
     e.preventDefault();
     toast.dismiss();
@@ -36,20 +28,6 @@ const SignUpForm = () => {
       await signup(email, username, password);
     }
   };
-
-  useEffect(() => {
-    if (error || googleError) {
-      const toastError = error || googleError;
-      toast.error(toastError);
-      setError(null);
-      setGoogleError("");
-    }
-
-    if (successMessage === "SUCCESS") {
-      toast.success("Sign up successful.");
-      setSuccessMessage("FAIL");
-    }
-  }, [error, googleError, successMessage]);
 
   return (
     <div className="flex lg:w-1/3 lg:h-3/4 shadow-lg shadow-black bg-snow rounded-xl my-auto mx-auto">
@@ -117,20 +95,6 @@ const SignUpForm = () => {
               </div>
             </div>
           </form>
-          <ToastContainer
-            position="top-center"
-            autoClose={2000}
-            hideProgressBar
-            newestOnTop={false}
-            closeOnClick
-            rtl={false}
-            pauseOnFocusLoss
-            draggable
-            pauseOnHover={false}
-            theme="colored"
-            transition={Slide}
-            stacked={true}
-          />
         </div>
       </div>
     </div>

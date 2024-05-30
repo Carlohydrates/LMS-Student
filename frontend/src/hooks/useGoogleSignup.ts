@@ -5,8 +5,7 @@ import { useAuthContext } from "./useAuthContext";
 import { useNavigate } from "react-router-dom";
 import { CredentialResponse, googleLogout } from "@react-oauth/google";
 import { jwtDecode } from "jwt-decode";
-import { Slide, ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { Slide, toast } from "react-toastify";
 
 interface DataCredentials {
   aud: string;
@@ -38,7 +37,7 @@ export const useGoogleSignup = () => {
 
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_BASE_URL}/google-signup`,
+        `${import.meta.env.VITE_USER_API}/google-signup`,
         {
           method: "POST",
           headers: {
@@ -48,20 +47,10 @@ export const useGoogleSignup = () => {
         }
       );
       if (response.ok) {
-        toast.success("Google account registered successfully.", {
-          position: "top-center",
-          autoClose: 2000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
-          transition: Slide,
-        });
+        toast.success("Google account registered successfully.");
         navigate("/login");
       } else {
-        setGoogleError("Google Account already Registered.");
+        toast.error("Google account already registered.");
         googleLogout();
         console.log("Google user logged out");
       }

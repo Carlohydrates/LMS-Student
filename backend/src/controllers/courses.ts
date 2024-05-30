@@ -8,7 +8,7 @@ import mongoose from "mongoose";
 export const getCourses: RequestHandler = async (req, res, next) => {
   try {
     const courses = await CourseModel.find().exec();
-    res.status(200).json(courses);
+    res.status(200).send(courses);
   } catch (error) {
     next(error);
   }
@@ -18,19 +18,19 @@ export const getCourses: RequestHandler = async (req, res, next) => {
 
 export const getCourse: RequestHandler = async (req, res, next) => {
   const courseId = req.params.courseId;
-
+  console.log(courseId);
   try {
-    if (!mongoose.isValidObjectId(courseId)) {
-      throw createHttpError(400, "Invalid course ID");
-    }
+    // if (!mongoose.isValidObjectId(courseId)) {
+    //   throw createHttpError(400, "Invalid course ID");
+    // }
 
-    const course = await CourseModel.findById(courseId).exec();
+    const course = await CourseModel.findOne({ code: courseId }).exec();
 
     if (!course) {
       throw createHttpError(404, "Course not found");
     }
 
-    res.status(200).json(course);
+    res.status(200).send(course);
   } catch (error) {
     next(error);
   }
@@ -41,7 +41,10 @@ export const getCourse: RequestHandler = async (req, res, next) => {
 interface CreateCourseBody {
   code?: string;
   title?: string;
-  text?: string;
+  description?: string;
+  publisher?: string;
+  tier?: string;
+  price?: number | null
 }
 
 export const createCourse: RequestHandler<
@@ -52,7 +55,10 @@ export const createCourse: RequestHandler<
 > = async (req, res, next) => {
   const code = req.body.code;
   const title = req.body.title;
-  const text = req.body.text;
+  const description = req.body.description;
+  const publisher = req.body.publisher;
+  const tier = req.body.tier;
+  const price = req.body.price;
 
   try {
     if (!code) {
@@ -61,11 +67,36 @@ export const createCourse: RequestHandler<
     if (!title) {
       throw createHttpError(400, "Course needs a title");
     }
+    if (!tier) {
+      throw createHttpError(400, "Course needs a tier");
+    }
+    if (tier === 'premium' && !price) {
+      throw createHttpError(400, "Premium course needs a price");
+    }
+
+    const existingCode = await CourseModel.findOne({
+      code: code,
+    }).exec();
+
+    if (existingCode) {
+      throw createHttpError(409, "Course with that course code already exists.");
+    }
+
+    const existingTitle = await CourseModel.findOne({
+      title: title,
+    }).exec();
+
+    if (existingTitle) {
+      throw createHttpError(409, "Course with that title already exists.");
+    }
 
     const newCourse = await CourseModel.create({
       code: code,
       title: title,
-      text: text,
+      description: description,
+      publisher: publisher,
+      tier: tier,
+      price: price
     });
 
     res.status(201).json(newCourse);
@@ -83,7 +114,11 @@ interface UpdateCourseParams {
 interface UpdateCourseBody {
   code?: string;
   title?: string;
-  text?: string;
+  description?: string;
+  publisher?: string;
+  status?: boolean;
+  tier?: string;
+  price?: number | null
 }
 
 export const updateCourse: RequestHandler<
@@ -92,36 +127,60 @@ export const updateCourse: RequestHandler<
   UpdateCourseBody,
   unknown
 > = async (req, res, next) => {
+  
   const courseId = req.params.courseId;
   const newCode = req.body.code;
   const newTitle = req.body.title;
-  const newText = req.body.text;
-
+  const newDesc = req.body.description;
+  const newPublisher = req.body.publisher;
+  const newStatus = req.body.status;
+  const newTier = req.body.tier;
+  const newPrice = req.body.price;
+  console.log(courseId, newCode, newTitle, newDesc, newStatus);
   try {
-    if (!mongoose.isValidObjectId(courseId)) {
-      throw createHttpError(400, "Invalid course ID");
-    }
-    if (!newCode) {
-      throw createHttpError(400, "Course needs a course code");
-    }
-    if (!newTitle) {
-      throw createHttpError(400, "Course needs a title");
-    }
-    if (!newText) {
-      throw createHttpError(400, "Course needs a text");
-    }
+    // if (!mongoose.isValidObjectId(courseId)) {
+    //   throw createHttpError(400, "Invalid course ID");
+    // }
+    // if (!newCode) {
+    //   throw createHttpError(400, "Course needs a course code");
+    // }
+    // if (!newTitle) {
+    //   throw createHttpError(400, "Course needs a title");
+    // }
+    // if (!newDesc) {
+    //   throw createHttpError(400, "Course needs a description");
+    // }
 
-    const course = await CourseModel.findById(courseId).exec();
+    const course = await CourseModel.findOne({ code: courseId });
+    console.log(course);
     if (!course) {
       throw createHttpError(404, "Course not found");
     }
-
-    course.code = newCode;
-    course.title = newTitle;
-    course.text = newText;
+    if (newCode) {
+      course.code = newCode;
+    }
+    if (newTitle) {
+      course.title = newTitle;
+    }
+    if (newDesc) {
+      course.description = newDesc;
+    }
+    if (newPublisher) {
+      course.publisher = newPublisher;
+    }
+    if (newStatus) {
+      course.isPublished = newStatus;
+    }
+    if (newTier) {
+      course.tier = newTier;
+    }
+    if (newPrice) {
+      course.price = newPrice;
+    }
 
     const updatedCourse = await course.save();
 
+    // console.log("asdsadsad", updatedCourse);
     res.status(200).json(updatedCourse);
   } catch (error) {
     next(error);
@@ -134,10 +193,10 @@ export const deleteCourse: RequestHandler = async (req, res, next) => {
   const courseId = req.params.courseId;
 
   try {
-    if (!mongoose.isValidObjectId(courseId)) {
-      throw createHttpError(400, "Invalid course ID");
-    }
-    const course = await CourseModel.findById(courseId).exec();
+    // if (!mongoose.isValidObjectId(courseId)) {
+    //   throw createHttpError(400, "Invalid course ID");
+    // }
+    const course = await CourseModel.findOne({ code: courseId }).exec();
     if (!course) {
       throw createHttpError(404, "Course not found");
     }

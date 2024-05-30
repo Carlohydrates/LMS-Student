@@ -1,14 +1,15 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { useContext, useState } from "react";
-import { MoreVertical, PanelLeftClose, PanelLeftOpen } from "lucide-react";
+import { useContext, useEffect, useState } from "react";
+import { Divide, MoreVertical, PanelLeftClose, PanelLeftOpen, UserRoundX } from "lucide-react";
 import SideNavItem from "./SideNavItem";
 import { BarChart3, LayoutDashboard, BookOpenText } from "lucide-react";
-import { PageContext } from "./Context";
+import { NavContext } from "../context/NavContext";
 import { useAuthContext } from "../hooks/useAuthContext";
+import { Dropdown } from "flowbite-react";
 
 const SideNav = () => {
   let activeItemId: number = 0;
-  const pageContext = useContext(PageContext);
+  const pageContext = useContext(NavContext);
 
   switch (pageContext) {
     case "dashboard": {
@@ -28,14 +29,23 @@ const SideNav = () => {
     }
   }
 
-  const [expanded, setExpanded] = useState<boolean>(false);
+   // Retrieve the expanded state from local storage
+   const [expanded, setExpanded] = useState<boolean>(() => {
+    const savedExpanded = localStorage.getItem("sideNavExpanded");
+    return savedExpanded ? JSON.parse(savedExpanded) : true;
+  });
+
   const [activeListItem, setActiveListItem] = useState<number>(activeItemId);
   const { user } = useAuthContext();
-  console.log(user);
+
+  // Update local storage whenever the expanded state changes
+  useEffect(() => {
+    localStorage.setItem("sideNavExpanded", JSON.stringify(expanded));
+  }, [expanded]);
   return (
     <nav
       className={`poppins-medium h-screen sticky top-0 flex-1 inline-flex flex-col bg-black_olive border-r shadow-sm transition-all ${
-        expanded ? "w-1/5" : "w-18"
+        expanded ? "lg:w-1/5" : "lg:w-18"
       }`}
     >
       <div className="p-4 pb-2 flex justify-between items-center text-left">
@@ -109,7 +119,10 @@ const SideNav = () => {
               {user.email}
             </span>
           </div>
-          <MoreVertical size={20} />
+          <Dropdown label="" placement="top" dismissOnClick={false} renderTrigger={() => <MoreVertical size={20} />}>
+            <Dropdown.Item className="text-red-600 gap-2 items-center hover:bg-red-200"><UserRoundX />Delete Account</Dropdown.Item>
+          </Dropdown>
+          
         </div>
       </div>
     </nav>

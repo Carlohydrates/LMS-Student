@@ -5,7 +5,7 @@ import { requireAuth } from "../middleware/requireAuth";
 const router = express.Router();
 
 // require auth for all course routes
-router.use(requireAuth);
+// router.use(requireAuth);
 
 router.get("/", CourseController.getCourses);
 router.get("/:courseId", CourseController.getCourse);

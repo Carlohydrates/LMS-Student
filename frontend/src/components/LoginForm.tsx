@@ -29,18 +29,18 @@ const LoginForm = () => {
     }
   };
 
-  const toastNotification = () => {
-    const toastMessage = error || googleError || null;
-    if (toastMessage) {
-      toast.error(toastMessage);
-    }
-  };
+  // const toastNotification = () => {
+  //   const toastMessage = error || googleError || null;
+  //   if (toastMessage) {
+  //     toast.error(toastMessage);
+  //   }
+  // };
 
-  useEffect(() => {
-    if (error || googleError) {
-      toastNotification();
-    }
-  }, [error, googleError]);
+  // useEffect(() => {
+  //   if (error || googleError) {
+  //     toastNotification();
+  //   }
+  // }, [error, googleError]);
 
   return (
     <div className="flex lg:w-1/3 lg:h-3/4 shadow-lg shadow-black bg-snow rounded-xl my-auto mx-auto">
@@ -105,20 +105,6 @@ const LoginForm = () => {
               </p>
             </div>
           </form>
-          <ToastContainer
-            position="top-center"
-            autoClose={2000}
-            hideProgressBar
-            newestOnTop={false}
-            closeOnClick
-            rtl={false}
-            pauseOnFocusLoss
-            draggable
-            pauseOnHover={false}
-            theme="colored"
-            transition={Slide}
-            stacked={true}
-          />
         </div>
       </div>
     </div>

@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useLogout } from "../hooks/useLogout";
 import { Button } from "flowbite-react";
 
-const Header = () => {
+const HeaderLoggedIn = () => {
   const navigate = useNavigate();
   const { logout } = useLogout();
 
@@ -34,4 +34,4 @@ const Header = () => {
   );
 };
 
-export default Header;
+export default HeaderLoggedIn;

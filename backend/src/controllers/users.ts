@@ -3,6 +3,7 @@ import createHttpError from "http-errors";
 import UserModel from "../models/user";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import mongoose from "mongoose";
 
 export const getAuthenticatedUser: RequestHandler = async (req, res, next) => {
   const authenticatedUserId = req.session.userId;
@@ -87,7 +88,7 @@ export const login: RequestHandler<
     }
 
     const user = await UserModel.findOne({ email: email })
-      .select("+email +username +password")
+      .select("+_id +email +username +password")
       .exec();
     if (!user) {
       throw createHttpError(401, "Invalid credentials");
@@ -105,7 +106,7 @@ export const login: RequestHandler<
     }
     // gen jwt
     const token = jwt.sign(
-      { name: user.username, email: user.email },
+      { name: user.username, email: user.email, _id: user._id },
       process.env.JWT_SECRET!,
       {
         expiresIn: "1d",
@@ -172,7 +173,7 @@ export const googleLogin: RequestHandler<
     }
 
     const user = await UserModel.findOne({ email: email })
-      .select("+email +username")
+      .select("+_id +email +username")
       .exec();
     if (!user) {
       res.status(401);
@@ -193,4 +194,35 @@ export const logout: RequestHandler = (req, res, next) => {
       res.sendStatus(200);
     }
   });
+};
+
+interface DeleteUserProps {
+  userId: string;
+}
+
+export const deleteUser: RequestHandler<
+  unknown,
+  unknown,
+  DeleteUserProps,
+  unknown
+> = async (req, res, next) => {
+  const userId = req.body.userId;
+
+  try {
+    if (!mongoose.isValidObjectId(userId)) {
+      throw createHttpError(400, "Invalid user ID");
+    }
+
+    const user = await UserModel.findById(userId);
+
+    if (!user) {
+      throw createHttpError(404, "User not found");
+    }
+
+    await user.deleteOne()
+
+    res.sendStatus(204);
+  } catch (error) {
+    next(error);
+  }
 };

@@ -1,5 +1,6 @@
 import { RequestHandler } from "express";
 import CourseModel from "../models/course";
+import UserModel from "../models/user"
 import createHttpError from "http-errors";
 import mongoose from "mongoose";
 
@@ -44,7 +45,7 @@ interface CreateCourseBody {
   description?: string;
   publisher?: string;
   tier?: string;
-  price?: number | null
+  price?: number | null;
 }
 
 export const createCourse: RequestHandler<
@@ -70,7 +71,7 @@ export const createCourse: RequestHandler<
     if (!tier) {
       throw createHttpError(400, "Course needs a tier");
     }
-    if (tier === 'premium' && !price) {
+    if (tier === "premium" && !price) {
       throw createHttpError(400, "Premium course needs a price");
     }
 
@@ -79,7 +80,10 @@ export const createCourse: RequestHandler<
     }).exec();
 
     if (existingCode) {
-      throw createHttpError(409, "Course with that course code already exists.");
+      throw createHttpError(
+        409,
+        "Course with that course code already exists."
+      );
     }
 
     const existingTitle = await CourseModel.findOne({
@@ -96,7 +100,7 @@ export const createCourse: RequestHandler<
       description: description,
       publisher: publisher,
       tier: tier,
-      price: price
+      price: price,
     });
 
     res.status(201).json(newCourse);
@@ -118,7 +122,7 @@ interface UpdateCourseBody {
   publisher?: string;
   status?: boolean;
   tier?: string;
-  price?: number | null
+  price?: number | null;
 }
 
 export const updateCourse: RequestHandler<
@@ -127,7 +131,6 @@ export const updateCourse: RequestHandler<
   UpdateCourseBody,
   unknown
 > = async (req, res, next) => {
-  
   const courseId = req.params.courseId;
   const newCode = req.body.code;
   const newTitle = req.body.title;
@@ -207,4 +210,51 @@ export const deleteCourse: RequestHandler = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
+};
+
+// ENROLL A USER
+
+interface EnrollUserParams {
+  courseCode: string;
+}
+
+interface EnrollUserBody {
+  username: string;
+}
+
+export const enrollUser: RequestHandler<
+  EnrollUserParams,
+  unknown,
+  EnrollUserBody,
+  unknown
+> = async (req, res, next) => {
+  const courseCode = req.params.courseCode;
+  const username = req.body.username;
+  console.log(courseCode)
+  console.log(username)
+  try {
+    const course = await CourseModel.findOne({code: courseCode}).exec();
+    if (!course) {
+      throw createHttpError(404, "Course not found");
+    }
+
+    const user = await UserModel.findOne({username: username}).exec();
+    if (!user) {
+      throw createHttpError(404, "User not found");
+    }
+
+    // Convert ObjectId to string for comparison
+    const enrolledUserIds = course.enrolled.map(id => id.toString());
+
+    if (enrolledUserIds.includes(user._id.toString())) {
+      throw createHttpError(409, "User already enrolled");
+    }
+
+    course.enrolled.push(user._id);
+    await course.save();
+    res.status(200).json(course)
+  } catch (error) {
+    next(error)
+  }
+
 };

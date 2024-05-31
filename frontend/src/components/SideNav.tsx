@@ -1,11 +1,19 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { useContext, useEffect, useState } from "react";
-import { Divide, MoreVertical, PanelLeftClose, PanelLeftOpen, UserRoundX } from "lucide-react";
+import {
+  MoreVertical,
+  PanelLeftClose,
+  PanelLeftOpen,
+  TriangleAlert,
+  UserRoundX,
+} from "lucide-react";
 import SideNavItem from "./SideNavItem";
 import { BarChart3, LayoutDashboard, BookOpenText } from "lucide-react";
 import { NavContext } from "../context/NavContext";
 import { useAuthContext } from "../hooks/useAuthContext";
-import { Dropdown } from "flowbite-react";
+import { Alert, Button, Dropdown, Modal } from "flowbite-react";
+import { useDeleteUser } from "../hooks/useDeleteUser";
+import { useLogout } from "../hooks/useLogout";
 
 const SideNav = () => {
   let activeItemId: number = 0;
@@ -29,8 +37,8 @@ const SideNav = () => {
     }
   }
 
-   // Retrieve the expanded state from local storage
-   const [expanded, setExpanded] = useState<boolean>(() => {
+  // Retrieve the expanded state from local storage
+  const [expanded, setExpanded] = useState<boolean>(() => {
     const savedExpanded = localStorage.getItem("sideNavExpanded");
     return savedExpanded ? JSON.parse(savedExpanded) : true;
   });
@@ -42,6 +50,11 @@ const SideNav = () => {
   useEffect(() => {
     localStorage.setItem("sideNavExpanded", JSON.stringify(expanded));
   }, [expanded]);
+
+  const { deleteUser } = useDeleteUser();
+  const { logout } = useLogout();
+  const [openConfirmModal, setOpenConfirmModal] = useState(false);
+
   return (
     <nav
       className={`poppins-medium h-screen sticky top-0 flex-1 inline-flex flex-col bg-black_olive border-r shadow-sm transition-all ${
@@ -101,7 +114,7 @@ const SideNav = () => {
               `}
       >
         <img
-          src={`https://ui-avatars.com/api/?background=a1d6d9&color=000000&bold=true&name=${user.username}`}
+          src={`https://ui-avatars.com/api/?background=62bbc1&color=000000&bold=true&name=${user.username}`}
           alt=""
           className="w-10 h-10 rounded-md"
         />
@@ -119,12 +132,56 @@ const SideNav = () => {
               {user.email}
             </span>
           </div>
-          <Dropdown label="" placement="top" dismissOnClick={false} renderTrigger={() => <MoreVertical size={20} />}>
-            <Dropdown.Item className="text-red-600 gap-2 items-center hover:bg-red-200"><UserRoundX />Delete Account</Dropdown.Item>
+          <Dropdown
+            label=""
+            placement="top"
+            dismissOnClick={false}
+            renderTrigger={() => (
+              <MoreVertical size={20} className="hover:cursor-pointer" />
+            )}
+          >
+            <Dropdown.Item
+              className="text-red-600 gap-2 items-center"
+              onClick={() => setOpenConfirmModal(true)}
+            >
+              <UserRoundX />
+              Delete Account
+            </Dropdown.Item>
           </Dropdown>
-          
         </div>
       </div>
+      <Modal
+        show={openConfirmModal}
+        size="sm"
+        onClose={() => setOpenConfirmModal(false)}
+      >
+        <Modal.Body>
+          <div className="flex flex-col justify-center text-center items-center gap-10 p-2 poppins-semibold lg:text-2xl text-red-600">
+            <Alert color="failure" icon={TriangleAlert} className="poppins-extrabold">
+              WARNING: You are about to delete your account.
+            </Alert>
+            <div className="flex flex-row gap-4 lg:text-lg">
+              <Button
+                data-testid="proceed"
+                color="failure"
+                onClick={() => {
+                  deleteUser(user._id);
+                  logout();
+                  setOpenConfirmModal(false);
+                }}
+              >
+                Proceed
+              </Button>
+              <Button
+                data-testid="cancel"
+                onClick={() => setOpenConfirmModal(false)}
+              >
+                Cancel
+              </Button>
+            </div>
+          </div>
+        </Modal.Body>
+      </Modal>
     </nav>
   );
 };

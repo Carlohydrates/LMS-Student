@@ -21,7 +21,7 @@ const HeaderLoggedIn = () => {
       <div className="flex justify-end gap-5 items-center">
         <Button
           onClick={handleLogout}
-          className="bg-verdigris-500 poppins-semibold py-0"
+          className="bg-verdigris poppins-semibold py-0"
         >
           SIGN OUT
         </Button>

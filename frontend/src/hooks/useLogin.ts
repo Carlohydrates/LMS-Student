@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useAuthContext } from "./useAuthContext";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 export const useLogin = () => {
   const [error, setError] = useState(null);
@@ -25,6 +26,7 @@ export const useLogin = () => {
       });
 
       if (!response.ok) {
+        toast.error("Invalid credentials")
         const errorData = await response.json();
         setError(errorData.error);
         setIsLoading(true);

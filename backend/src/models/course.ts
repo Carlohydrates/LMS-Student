@@ -1,4 +1,4 @@
-import { InferSchemaType, model, Schema } from "mongoose";
+import { InferSchemaType, model, Schema, Types } from "mongoose";
 import User from "./user"
 
 const courseSchema = new Schema(
@@ -10,6 +10,7 @@ const courseSchema = new Schema(
     publisher: { type: String, required: true },
     tier: { type: String, required: true},
     price: { type: Number, required: false},
+    enrolled: [{ type: Types.ObjectId, ref: "User"}]
   },
   { timestamps: true }
 );

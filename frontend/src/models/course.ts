@@ -7,6 +7,7 @@ export interface Course {
   publisher: string;
   tier: string;
   price?: number;
+  enrolled: string[];
   createdAt: string;
   updatedAt: string;
 }

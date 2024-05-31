@@ -13,4 +13,6 @@ router.post("/", CourseController.createCourse);
 router.patch("/:courseId", CourseController.updateCourse);
 router.delete("/:courseId", CourseController.deleteCourse);
 
+router.post("/:courseCode/enroll", CourseController.enrollUser);
+
 export default router;

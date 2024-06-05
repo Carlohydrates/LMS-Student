@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { jwtDecode } from "jwt-decode";
 import React, {
   FC,
   useReducer,
@@ -7,9 +6,11 @@ import React, {
   ReactNode,
   useEffect,
 } from "react";
+import {jwtDecode} from "jwt-decode";
 
 interface AuthState {
   user: any;
+  loading: boolean;
 }
 
 interface AuthAction {
@@ -19,17 +20,17 @@ interface AuthAction {
 
 interface AuthContextProps {
   user: any;
+  loading: boolean;
   dispatch: React.Dispatch<AuthAction>;
 }
 
-interface decodedJWT {
+interface DecodedJWT {
+  _id: string;
   email: string;
   name: string;
 }
 
-export const AuthContext = createContext<AuthContextProps | undefined>(
-  undefined
-);
+export const AuthContext = createContext<AuthContextProps | undefined>(undefined);
 
 const authReducer = (state: AuthState, action: AuthAction) => {
   switch (action.type) {
@@ -37,14 +38,24 @@ const authReducer = (state: AuthState, action: AuthAction) => {
       return {
         ...state,
         user: action.payload,
+        loading: false,
       };
-
     case "LOGOUT":
       return {
         ...state,
         user: null,
+        loading: false,
       };
-
+    case "SET_LOADING":
+      return {
+        ...state,
+        loading: true,
+      };
+    case "STOP_LOADING":
+      return {
+        ...state,
+        loading: false,
+      };
     default:
       return state;
   }
@@ -59,22 +70,30 @@ export const AuthContextProvider: FC<AuthContextProviderProps> = ({
 }) => {
   const [state, dispatch] = useReducer(authReducer, {
     user: null,
+    loading: true,
   });
 
   useEffect(() => {
-    const user: string | null = localStorage.getItem("user") || null;
+    const initializeAuth = async () => {
+      const user: string | null = localStorage.getItem("user");
 
-    if (user) {
-      console.log("User: ", user);
-      const decodedUser: decodedJWT = jwtDecode<decodedJWT>(user!);
-      console.log("Decoded User: ", decodedUser);
-      const { name: username, email } = decodedUser;
-      const userInfo = { username, email };
-      dispatch({ type: "LOGIN", payload: userInfo });
-    }
+      if (user) {
+        try {
+          const decodedUser: DecodedJWT = jwtDecode<DecodedJWT>(user);
+          const { name: username, email, _id } = decodedUser;
+          const userInfo = { _id, username, email };
+          dispatch({ type: "LOGIN", payload: userInfo });
+        } catch (error) {
+          console.error("Failed to decode token", error);
+          dispatch({ type: "LOGOUT" });
+        }
+      } else {
+        dispatch({ type: "STOP_LOADING" });
+      }
+    };
+
+    initializeAuth();
   }, []);
-
-  console.log("Auth Context State: ", state);
 
   return (
     <AuthContext.Provider value={{ ...state, dispatch }}>
@@ -82,3 +101,4 @@ export const AuthContextProvider: FC<AuthContextProviderProps> = ({
     </AuthContext.Provider>
   );
 };
+

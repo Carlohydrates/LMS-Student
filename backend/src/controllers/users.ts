@@ -4,6 +4,7 @@ import UserModel from "../models/user";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import mongoose from "mongoose";
+import CourseModel from "../models/course";
 
 export const getAuthenticatedUser: RequestHandler = async (req, res, next) => {
   const authenticatedUserId = req.session.userId;
@@ -214,11 +215,12 @@ export const deleteUser: RequestHandler<
     }
 
     const user = await UserModel.findById(userId);
-
     if (!user) {
       throw createHttpError(404, "User not found");
     }
 
+    // unenroll user from all courses then delete
+    await CourseModel.updateMany({ enrolled: userId },{ $pull: {enrolled: { $in: [user._id]}}});
     await user.deleteOne()
 
     res.sendStatus(204);

@@ -1,108 +1,46 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { GoogleOAuthProvider } from "@react-oauth/google";
-import Dashboard from "./pages/Dashboard.tsx";
-import Courses from "./pages/Courses.tsx";
-import { NotFoundPage } from "./pages/NotFoundPage.tsx";
-import CourseInfo from "./pages/CourseInfo.tsx";
-import Grades from "./pages/Grades.tsx";
-import Login from "./pages/Login.tsx";
-import { AuthContextProvider } from "./context/AuthContext.tsx";
-import SignUp from "./pages/SignUp.tsx";
-import Landing from "./pages/Landing.tsx";
-import { useAuthContext } from "./hooks/useAuthContext.ts";
-import { Navigate } from "react-router-dom";
-import { Slide, ToastContainer } from "react-toastify";
+import Dashboard from "./pages/Dashboard";
+import Courses from "./pages/Courses";
+import { NotFoundPage } from "./pages/NotFoundPage";
+import CourseInfo from "./pages/CourseInfo";
+import Grades from "./pages/Grades";
+import Login from "./pages/Login";
+import { AuthContextProvider } from "./context/AuthContext";
+import SignUp from "./pages/SignUp";
+import Landing from "./pages/Landing";
+import { ToastContainer, Slide } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
+import ProtectedRoutes from "./layouts/ProtectedRoutes";
+import PublicRoutes from "./layouts/PublicRoutes";
 
-interface RouteProps {
-  children: React.ReactNode;
-}
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <PublicRoutes />,
+    children: [
+      { path: "/", element: <Landing /> },
+      { path: "/login", element: <Login /> },
+      { path: "/signup", element: <SignUp /> },
+    ],
+  },
+  {
+    path: "/",
+    element: <ProtectedRoutes />,
+    children: [
+      { path: "/dashboard", element: <Dashboard /> },
+      { path: "/courses", element: <Courses /> },
+      { path: "/courses/:id", element: <CourseInfo /> },
+      { path: "/grades", element: <Grades /> },
+    ],
+  },
+  { path: "*", element: <NotFoundPage /> },
+]);
 
-const PublicRoutes: React.FC<RouteProps> = ({ children }) => {
-  const { user } = useAuthContext();
-
-  if (user) {
-    return <Navigate to="/dashboard" />;
-  }
-
-  return children;
-};
-
-const ProtectedRoutes: React.FC<RouteProps> = ({ children }) => {
-  const { user } = useAuthContext();
-
-  if (!user) {
-    return <Navigate to="/login" />;
-  }
-
-  return children;
-};
-
-export const App = () => {
-  const router = createBrowserRouter([
-    {
-      path: "/",
-      element: (
-        <PublicRoutes>
-          <Landing />
-        </PublicRoutes>
-      ),
-      errorElement: <NotFoundPage />,
-    },
-    {
-      path: "/login",
-      element: (
-        <PublicRoutes>
-          <Login />
-        </PublicRoutes>
-      ),
-    },
-    {
-      path: "/signup",
-      element: (
-        <PublicRoutes>
-          <SignUp />
-        </PublicRoutes>
-      ),
-    },
-    {
-      path: "/dashboard",
-      element: (
-        <ProtectedRoutes>
-          <Dashboard />
-        </ProtectedRoutes>
-      ),
-    },
-    {
-      path: "/courses",
-      element: (
-        <ProtectedRoutes>
-          <Courses />
-        </ProtectedRoutes>
-      ),
-    },
-    {
-      path: "/courses/:id",
-      element: <CourseInfo />,
-    },
-    {
-      path: "/grades",
-      element: (
-        <ProtectedRoutes>
-          <Grades />
-        </ProtectedRoutes>
-      ),
-    },
-  ]);
-  return <RouterProvider router={router} />;
-};
-
-const root = ReactDOM.createRoot(
-  document.getElementById("root") as HTMLElement
-);
+const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement);
 root.render(
   <AuthContextProvider>
     <GoogleOAuthProvider clientId={import.meta.env.VITE_CLIENT_ID}>
@@ -111,7 +49,7 @@ root.render(
           position="top-center"
           autoClose={2000}
           hideProgressBar
-          newestOnTop={false}
+          newestOnTop={true}
           closeOnClick
           rtl={false}
           pauseOnFocusLoss
@@ -120,8 +58,9 @@ root.render(
           theme="colored"
           transition={Slide}
         />
-        <App />
+        <RouterProvider router={router} />
       </React.StrictMode>
     </GoogleOAuthProvider>
   </AuthContextProvider>
 );
+

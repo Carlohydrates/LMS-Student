@@ -58,7 +58,7 @@ const CourseCard: React.FC<CourseCardProps> = ({
             triggerRefresh();
           }}
         >
-          Enroll Now
+          Enroll Course
         </Button>
       </div>
     );

@@ -40,7 +40,7 @@ const SideNav = () => {
   // Retrieve the expanded state from local storage
   const [expanded, setExpanded] = useState<boolean>(() => {
     const savedExpanded = localStorage.getItem("sideNavExpanded");
-    return savedExpanded ? JSON.parse(savedExpanded) : true;
+    return savedExpanded ? JSON.parse(savedExpanded) : false;
   });
 
   const [activeListItem, setActiveListItem] = useState<number>(activeItemId);

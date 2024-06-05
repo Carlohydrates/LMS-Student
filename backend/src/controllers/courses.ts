@@ -27,9 +27,14 @@ export const getCourse: RequestHandler = async (req, res, next) => {
 
     const course = await CourseModel.findOne({ code: courseId }).exec();
 
+    
     if (!course) {
       throw createHttpError(404, "Course not found");
     }
+    
+    // if(!course.isPublished) {
+    //   throw createHttpError(404, "Course not Published")
+    // }
 
     res.status(200).send(course);
   } catch (error) {
@@ -251,6 +256,64 @@ export const enrollUser: RequestHandler<
     }
 
     course.enrolled.push(user._id);
+    await course.save();
+    res.status(200).json(course)
+  } catch (error) {
+    next(error)
+  }
+
+};
+
+export const getEnrollees: RequestHandler = async (req, res, next) => {
+  const courseId = req.params.courseId;
+  console.log(courseId);
+  try {
+    const course = await CourseModel.findOne({ code: courseId }).exec();
+
+    if (!course) {
+      throw createHttpError(404, "Course not found");
+    }
+
+    const { enrolled } = await course.populate("enrolled");
+
+    if (!enrolled) {
+      throw createHttpError(404, "No enrollees found for this course");
+    }
+    res.status(200).send(enrolled);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const unenrollUser: RequestHandler<
+  EnrollUserParams,
+  unknown,
+  EnrollUserBody,
+  unknown
+> = async (req, res, next) => {
+  const courseCode = req.params.courseCode;
+  const username = req.body.username;
+  console.log(courseCode)
+  console.log(username)
+  try {
+    const course = await CourseModel.findOne({code: courseCode}).exec();
+    if (!course) {
+      throw createHttpError(404, "Course not found");
+    }
+
+    const user = await UserModel.findOne({username: username}).exec();
+    if (!user) {
+      throw createHttpError(404, "User not found");
+    }
+
+    // Convert ObjectId to string for comparison
+    const enrolledUserIds = course.enrolled.map(id => id.toString());
+
+    if (!enrolledUserIds.includes(user._id.toString())) {
+      throw createHttpError(409, "User not enrolled");
+    }
+
+    course.enrolled.remove(user._id);
     await course.save();
     res.status(200).json(course)
   } catch (error) {

@@ -1,13 +1,11 @@
 import { toast } from "react-toastify";
-import { useGetCourses } from "./useGetCourses";
 
 /* eslint-disable @typescript-eslint/no-unused-vars */
-export const useEnrollUser = () => {
-  const { triggerRefresh } = useGetCourses();
-  const enrollUser = async (courseCode: string, username: string) => {
+export const useUnenrollUser = () => {
+  const unenrollUser = async (courseCode: string, username: string) => {
     try {
       const res = await fetch(
-        `${import.meta.env.VITE_COURSE_API}/${courseCode}/enroll`,
+        `${import.meta.env.VITE_COURSE_API}/${courseCode}/unenroll`,
         {
           method: "POST",
           headers: {
@@ -17,16 +15,16 @@ export const useEnrollUser = () => {
         }
       );
       if (res.ok) {
-        toast.success("User enrolled successfully.");
-        triggerRefresh();
+        toast.success("User unenrolled successfully.");
+        //
       }
       if (!res.ok) {
-        toast.error("Error enrolling course.");
+        toast.error("Error unenrolling course.");
       }
     } catch (error) {
       console.log(error);
     }
   };
 
-  return { enrollUser };
+  return { unenrollUser };
 };

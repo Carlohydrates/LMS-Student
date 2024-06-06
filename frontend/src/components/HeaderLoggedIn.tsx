@@ -20,6 +20,7 @@ const HeaderLoggedIn = () => {
       </div>
       <div className="flex justify-end gap-5 items-center">
         <Button
+          data-testid="logout-button"
           onClick={handleLogout}
           className="bg-verdigris poppins-semibold py-0"
         >

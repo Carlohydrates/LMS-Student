@@ -45,6 +45,7 @@ const SignUpForm = () => {
                 <Label htmlFor="email" value="Email" />
               </div>
               <TextInput
+                data-testid="email-register-field"
                 onChange={(e) => setEmail(e.target.value)}
                 id="email"
                 type="email"
@@ -56,6 +57,7 @@ const SignUpForm = () => {
                 <Label htmlFor="username" value="Username" />
               </div>
               <TextInput
+                data-testid="name-register-field"
                 onChange={(e) => setUsername(e.target.value)}
                 id="username"
                 type="text"
@@ -67,6 +69,7 @@ const SignUpForm = () => {
                 <Label htmlFor="password" value="Password" />
               </div>
               <TextInput
+                data-testid="password-register-field"
                 onChange={(e) => setPassword(e.target.value)}
                 id="password"
                 type="password"
@@ -75,6 +78,7 @@ const SignUpForm = () => {
             </div>
             <div className="flex flex-col mx-auto w-full">
               <Button
+                data-testid="register-button"
                 type="submit"
                 // disabled={isLoading!}
                 className="bg-verdigris-500"
@@ -85,6 +89,7 @@ const SignUpForm = () => {
               <div className="hover:shadow-inner mx-auto">
                 <div className="w-full">
                   <GoogleLogin
+                    data-testid="google-register-button"
                     text="signup_with"
                     onSuccess={async (credentialResponse) => {
                       googleSignup(credentialResponse);

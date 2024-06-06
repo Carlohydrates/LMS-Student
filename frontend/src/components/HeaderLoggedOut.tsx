@@ -13,6 +13,7 @@ const HeaderLoggedOut = () => {
       />
       <div className="flex text-center items-center">
         <button
+          data-testid="login-signup-button"
           className="flex poppins-regular p-5 text-sm hover:underline"
           onClick={() => navigate("/login")}
         >

@@ -58,6 +58,7 @@ const LoginForm = () => {
                 <Label htmlFor="email" value="Email" />
               </div>
               <TextInput
+                data-testid="email-login-field"
                 onChange={(e) => setEmail(e.target.value)}
                 id="email"
                 type="email"
@@ -69,6 +70,7 @@ const LoginForm = () => {
                 <Label htmlFor="password" value="Password" />
               </div>
               <TextInput
+                data-testid="password-login-field"
                 onChange={(e) => setPassword(e.target.value)}
                 id="password"
                 type="password"
@@ -77,6 +79,7 @@ const LoginForm = () => {
             </div>
             <div className="flex flex-col mx-auto w-full">
               <Button
+                data-testid="login-button"
                 type="submit"
                 // disabled={isLoading!}
                 className="bg-verdigris-500"
@@ -87,6 +90,7 @@ const LoginForm = () => {
               <div className="hover:shadow-inner mx-auto">
                 <div className="w-full">
                   <GoogleLogin
+                    data-testid="google-login-button"
                     onSuccess={async (credentialResponse) => {
                       googleLogin(credentialResponse);
                     }}

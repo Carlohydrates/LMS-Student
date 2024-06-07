@@ -61,6 +61,7 @@ export const signUp: RequestHandler<
       username: username,
       email: email,
       password: passwordHashed,
+      tier: 1,
     });
     // req.session.userId = newUser._id;
     res.status(201).json(newUser);

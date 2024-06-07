@@ -1,6 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { useContext, useEffect, useState } from "react";
 import {
+  BookUser,
+  Gem,
   MoreVertical,
   PanelLeftClose,
   PanelLeftOpen,
@@ -24,12 +26,20 @@ const SideNav = () => {
       activeItemId = 1;
       break;
     }
-    case "courses": {
+    case "course catalog": {
       activeItemId = 2;
       break;
     }
-    case "grades": {
+    case "my courses": {
       activeItemId = 3;
+      break;
+    }
+    case "grades": {
+      activeItemId = 4;
+      break;
+    }
+    case "pricing": {
+      activeItemId = 5;
       break;
     }
     default: {
@@ -57,7 +67,7 @@ const SideNav = () => {
 
   return (
     <nav
-      className={`poppins-medium h-screen sticky top-0 flex-1 inline-flex flex-col bg-black_olive border-r shadow-sm transition-all ${
+      className={`poppins-medium h-screen sticky top-0 flex-1 inline-flex flex-col bg-black_olive border-r shadow-sm transition-all z-50 ${
         expanded ? "lg:w-1/5" : "lg:w-18"
       }`}
     >
@@ -71,7 +81,7 @@ const SideNav = () => {
         />
         <button
           onClick={() => setExpanded((curr) => !curr)}
-          className="p-1.5 rounded-lg bg-black_olive text-snow hover:scale-125"
+          className="p-1.5 rounded-lg bg-black_olive text-snow hover:scale-110"
         >
           {expanded ? (
             <PanelLeftClose size={27} />
@@ -91,18 +101,35 @@ const SideNav = () => {
         />
         <SideNavItem
           icon={<BookOpenText size={25} />}
-          text="Courses"
+          text="Course Catalog"
           expanded={expanded}
           id={2}
           active={activeListItem === 2}
           setActiveListItem={setActiveListItem}
         />
         <SideNavItem
-          icon={<BarChart3 size={25} />}
-          text="Grades"
+          icon={<BookUser size={25} />}
+          text="My Courses"
           expanded={expanded}
           id={3}
           active={activeListItem === 3}
+          setActiveListItem={setActiveListItem}
+          alert
+        />
+        <SideNavItem
+          icon={<BarChart3 size={25} />}
+          text="Grades"
+          expanded={expanded}
+          id={4}
+          active={activeListItem === 4}
+          setActiveListItem={setActiveListItem}
+        />
+        <SideNavItem
+          icon={<Gem size={25} />}
+          text="Pricing"
+          expanded={expanded}
+          id={5}
+          active={activeListItem === 5}
           setActiveListItem={setActiveListItem}
         />
       </ul>

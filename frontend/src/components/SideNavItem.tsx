@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { Dropdown } from "flowbite-react";
 import { ReactNode } from "react";
 import { Link } from "react-router-dom";
 
@@ -22,11 +24,11 @@ const SideNavItem: React.FC<Props> = ({
 }) => {
   return (
     <>
-      <Link to={`/${text}`}>
+      <Link to={`/${text.replace(" ", "")}`}>
         <li
           onClick={() => setActiveListItem(id)}
           className={`
-          relative flex items-center py-3 px-3 my-2
+          relative flex items-center py-3 px-3 my-3 lg:max-h-12
           font-medium rounded-md cursor-pointer
           transition-colors group
           ${
@@ -46,7 +48,7 @@ const SideNavItem: React.FC<Props> = ({
           </span>
           {alert && (
             <div
-              className={`absolute right-2 w-2 h-2 rounded bg-indigo-400 ${
+              className={`absolute right-2 w-2 h-2 rounded bg-verdigris ${
                 expanded ? "" : "top-2"
               }`}
             />
@@ -55,7 +57,7 @@ const SideNavItem: React.FC<Props> = ({
           {!expanded && (
             <div
               className={`
-            absolute left-full rounded-md px-2 py-1 ml-2
+            absolute left-full rounded-md px-2 py-1 ml-2 text-nowrap
             bg-snow-500 text-black_olive text-sm
             invisible opacity-20 -translate-x-3 transition-all
             group-hover:visible group-hover:opacity-90 group-hover:translate-x-0

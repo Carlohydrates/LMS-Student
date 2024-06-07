@@ -4,7 +4,7 @@ import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import Dashboard from "./pages/Dashboard";
-import Courses from "./pages/Courses";
+import Courses from "./pages/CourseCatalog";
 import { NotFoundPage } from "./pages/NotFoundPage";
 import CourseInfo from "./pages/CourseInfo";
 import Grades from "./pages/Grades";
@@ -16,6 +16,8 @@ import { ToastContainer, Slide } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import ProtectedRoutes from "./layouts/ProtectedRoutes";
 import PublicRoutes from "./layouts/PublicRoutes";
+import Pricing from "./pages/Pricing";
+import MyCourses from "./pages/MyCourses";
 
 const router = createBrowserRouter([
   {
@@ -32,9 +34,11 @@ const router = createBrowserRouter([
     element: <ProtectedRoutes />,
     children: [
       { path: "/dashboard", element: <Dashboard /> },
-      { path: "/courses", element: <Courses /> },
+      { path: "/coursecatalog", element: <Courses /> },
+      { path: "/mycourses", element: <MyCourses /> },
       { path: "/courses/:id", element: <CourseInfo /> },
       { path: "/grades", element: <Grades /> },
+      { path: "/pricing", element: <Pricing /> },
     ],
   },
   { path: "*", element: <NotFoundPage /> },

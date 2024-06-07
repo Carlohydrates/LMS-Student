@@ -10,6 +10,7 @@ interface CourseCardProps {
   title: string;
   description: string;
   isPublished: boolean;
+  publisher: string;
   tier: string;
   price?: number;
   enrolled: string[];
@@ -20,6 +21,7 @@ const CourseCard: React.FC<CourseCardProps> = ({
   title,
   description,
   isPublished,
+  publisher,
   tier,
   price,
   enrolled,
@@ -30,7 +32,7 @@ const CourseCard: React.FC<CourseCardProps> = ({
 
   if (isPublished) {
     return (
-      <div className="flex flex-col bg-[url('/peaks1.svg')] poppins-regular min-w-full min-h-full p-14 gap-4">
+      <div className="bg-[url('/peaks1.svg')] rounded-xl lg:w-[26rem] lg:h-80 text-black_olive poppins-regular p-7">
         <h1 className="w-full h-10 poppins-extrabold justify-between">
           <div className="flex justify-between items-start text-3xl">
             {code}
@@ -44,7 +46,8 @@ const CourseCard: React.FC<CourseCardProps> = ({
           </div>
         </h1>
         <h2 className="poppins-semibold-italic text-lg text-snow">{title}</h2>
-        <div className="text-ellipsis overflow-hidden line-clamp-6 text-justify h-30 w-full text-snow">
+        <h3 className="poppins-semibold-italic text-sm text-black_olive mb-2">Publisher: <span className="poppins-regular-italic">{publisher}</span></h3>
+        <div className="text-ellipsis overflow-hidden line-clamp-5 text-justify h-30 w-full text-snow">
           {description}
           Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tempora
           voluptatem quibusdam dolorem, vero, eum accusantium earum perspiciatis

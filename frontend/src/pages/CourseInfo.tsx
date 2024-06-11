@@ -42,7 +42,7 @@ const CourseInfo = () => {
 
   return (
     <div className="flex flex-row w-full">
-      <NavContext.Provider value={"courses"}>
+      <NavContext.Provider value={"my courses"}>
         <SideNav />
         <div className="flex flex-col lg:w-screen lg:h-screen overflow-y-auto bg-black_olive-600">
           <HeaderLoggedIn />

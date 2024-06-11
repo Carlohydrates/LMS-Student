@@ -179,7 +179,7 @@ export const googleLogin: RequestHandler<
       .exec();
     if (!user) {
       res.status(401);
-      throw createHttpError(401, "Invalid credentials");
+      throw createHttpError(401, "Google Account not registered");
     }
 
     res.status(201).json({ user });

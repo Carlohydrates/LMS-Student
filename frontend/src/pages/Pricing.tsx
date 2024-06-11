@@ -4,8 +4,10 @@ import { NavContext } from "../context/NavContext";
 import HeaderLoggedIn from "../components/HeaderLoggedIn";
 import { Button, Card, Table, TableCell } from "flowbite-react";
 import { CircleCheck } from "lucide-react";
+import { useGetPrice } from "../hooks/premium/useGetPrice";
 
 const Pricing = () => {
+  const { price } = useGetPrice();
   return (
     <main className="flex flex-row">
       <NavContext.Provider value={"pricing"}>
@@ -16,14 +18,14 @@ const Pricing = () => {
             <div className="flex flex-row justify-evenly gap-4 p-4">
               <Card className="flex w-[32rem] h-[38rem] text-center">
                 <h1 className="poppins-semibold text-4xl">FREE</h1>
-                <p className="poppins-regular text-2xl">&#8369; 0</p>
+                <p className="poppins-regular text-2xl">$ 0</p>
                 <p className="poppins-regular text-sm">
                   Get started right away with access to free courses
                 </p>
               </Card>
               <Card className="flex w-[32rem] h-[38rem] text-center">
                 <h1 className="poppins-semibold text-4xl">PREMIUM</h1>
-                <p className="poppins-regular text-2xl">&#8369; 500</p>
+                <p className="poppins-regular text-2xl">$ {price}</p>
                 <p className="poppins-regular text-sm">
                   Step up your learning with access to premium courses and more
                 </p>

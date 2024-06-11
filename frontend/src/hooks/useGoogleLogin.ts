@@ -5,6 +5,7 @@ import { useAuthContext } from "./useAuthContext";
 import { useNavigate } from "react-router-dom";
 import { CredentialResponse, googleLogout } from "@react-oauth/google";
 import { jwtDecode } from "jwt-decode";
+import { toast } from "react-toastify";
 
 interface DataCredentials {
   aud: string;
@@ -60,7 +61,8 @@ export const useGoogleLogin = () => {
 
         navigate("/dashboard");
       } else {
-        setGoogleError("Google Account is not Registered");
+        toast.error("Google Account is not Registered");
+        navigate("/signup")
         googleLogout();
         console.log("Google user logged out");
       }

@@ -33,7 +33,7 @@ const MyCourses = () => {
                   .map((course) => (
                     <div
                       key={course._id}
-                      className="bg-[url('/peaks2.svg')] rounded-xl lg:w-[26rem] lg:h-80 text-snow poppins-regular p-7"
+                      className="bg-[url('/peaks2.svg')] rounded-xl lg:w-[26rem] lg:h-80 text-snow poppins-regular p-7 hover:shadow-verdigris hover:shadow-md"
                     >
                       <h1 className="w-full h-10 poppins-extrabold justify-between">
                         <div className="flex justify-between items-start lg:text-3xl">

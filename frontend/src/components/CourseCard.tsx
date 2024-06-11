@@ -32,7 +32,7 @@ const CourseCard: React.FC<CourseCardProps> = ({
 
   if (isPublished) {
     return (
-      <div className="bg-[url('/peaks1.svg')] rounded-xl lg:w-[26rem] lg:h-80 text-black_olive poppins-regular p-7">
+      <div className="bg-[url('/peaks1.svg')] rounded-xl lg:w-[26rem] lg:h-80 text-black_olive poppins-regular p-7 hover:shadow-black_olive hover:shadow-md">
         <h1 className="w-full h-10 poppins-extrabold justify-between">
           <div className="flex justify-between items-start text-3xl">
             {code}

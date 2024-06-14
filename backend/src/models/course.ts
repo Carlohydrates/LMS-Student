@@ -8,8 +8,7 @@ const courseSchema = new Schema(
     description: { type: String, required: true },
     isPublished: { type: Boolean, required: true, default: false },
     publisher: { type: String, required: true },
-    tier: { type: String, required: true},
-    price: { type: Number, required: false},
+    tier: { type: Number, required: true},
     enrolled: [{ type: Types.ObjectId, ref: "User"}]
   },
   { timestamps: true }

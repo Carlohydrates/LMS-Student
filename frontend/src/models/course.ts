@@ -5,7 +5,7 @@ export interface Course {
   description: string;
   isPublished: boolean;
   publisher: string;
-  tier: string;
+  tier: number;
   price?: number;
   enrolled: string[];
   createdAt: string;

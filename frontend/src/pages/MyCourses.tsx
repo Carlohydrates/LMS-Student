@@ -2,10 +2,10 @@
 import SideNav from "../components/SideNav";
 import { NavContext } from "../context/NavContext";
 import HeaderLoggedIn from "../components/HeaderLoggedIn";
-import { useGetCourses } from "../hooks/useGetCourses";
+import { useGetCourses } from "../hooks/course/useGetCourses";
 import { useAuthContext } from "../hooks/useAuthContext";
 import { Badge, Button } from "flowbite-react";
-import { useUnenrollUser } from "../hooks/useUnenrollUser";
+import { useUnenrollUser } from "../hooks/user/useUnenrollUser";
 import { useNavigate } from "react-router-dom";
 
 const MyCourses = () => {
@@ -41,9 +41,9 @@ const MyCourses = () => {
                           <Badge
                             className="inline-flex size-fit"
                             size={"sm"}
-                            color={course.tier === "free" ? "pink" : "indigo"}
+                            color={course.tier === 0 ? "pink" : "indigo"}
                           >
-                            {course.tier === "free" ? "FREE" : "PREMIUM"}
+                            {course.tier === 0 ? "FREE" : "PREMIUM"}
                           </Badge>
                         </div>
                       </h1>

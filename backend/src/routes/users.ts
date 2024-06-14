@@ -3,6 +3,8 @@ import * as userController from "../controllers/users";
 
 const router = express.Router();
 
+router.get("/:userId/tier", userController.getUserTier);
+
 router.get("/", userController.getAuthenticatedUser);
 router.post("/signup", userController.signUp);
 router.post("/login", userController.login);

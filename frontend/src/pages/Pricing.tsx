@@ -2,12 +2,19 @@
 import SideNav from "../components/SideNav";
 import { NavContext } from "../context/NavContext";
 import HeaderLoggedIn from "../components/HeaderLoggedIn";
-import { Button, Card, Table, TableCell } from "flowbite-react";
-import { CircleCheck } from "lucide-react";
+import { Button, Card, Modal, Table, TableCell } from "flowbite-react";
+import { CircleCheck, ShoppingCart } from "lucide-react";
 import { useGetPrice } from "../hooks/premium/useGetPrice";
+import { useState } from "react";
+import { useUpgradePremium } from "../hooks/useUpgradePremium";
+import { useAuthContext } from "../hooks/useAuthContext";
 
 const Pricing = () => {
   const { price } = useGetPrice();
+  const [checkoutModal, setCheckoutModal] = useState(false);
+  const { upgradePremium } = useUpgradePremium();
+  const { user } = useAuthContext();
+
   return (
     <main className="flex flex-row">
       <NavContext.Provider value={"pricing"}>
@@ -16,14 +23,14 @@ const Pricing = () => {
           <HeaderLoggedIn />
           <div className="lg:w-11/12 h-full mx-auto my-12">
             <div className="flex flex-row justify-evenly gap-4 p-4">
-              <Card className="flex w-[32rem] h-[38rem] text-center">
+              <Card className="flex w-[30rem] h-[35rem] text-center">
                 <h1 className="poppins-semibold text-4xl">FREE</h1>
                 <p className="poppins-regular text-2xl">$ 0</p>
                 <p className="poppins-regular text-sm">
                   Get started right away with access to free courses
                 </p>
               </Card>
-              <Card className="flex w-[32rem] h-[38rem] text-center">
+              <Card className="flex w-[30rem] h-[35rem] text-center">
                 <h1 className="poppins-semibold text-4xl">PREMIUM</h1>
                 <p className="poppins-regular text-2xl">$ {price}</p>
                 <p className="poppins-regular text-sm">
@@ -31,12 +38,62 @@ const Pricing = () => {
                 </p>
                 <Button
                   outline
-                  className="size-fit self-center my-8 poppins-semibold"
+                  className="flex size-fit self-center my-8 poppins-semibold"
+                  onClick={() => setCheckoutModal(true)}
                 >
                   Upgrade to Premium
                 </Button>
               </Card>
             </div>
+
+            <Modal
+              show={checkoutModal}
+              size="lg"
+              onClose={() => setCheckoutModal(false)}
+            >
+              <Modal.Header className="p-4">
+                <ShoppingCart className="inline-flex align-bottom mx-2" />
+                <div className="inline-flex">Checkout</div>
+              </Modal.Header>
+              <Modal.Body>
+                <div className="flex flex-col my-4 w-full h-auto items-center">
+                  <h1 className="poppins-semibold">Premium Tier</h1>
+                  <h2 className="poppins-semibold text-7xl">${price}</h2>
+                  <div className="flex flex-col poppins-regular text-sm my-8">
+                    <div className="flex gap-2">
+                      <CircleCheck className="text-green-400" /> Access to free
+                      courses
+                    </div>
+                    <div className="flex gap-2">
+                      <CircleCheck className="text-green-400" /> Access to
+                      premium courses
+                    </div>
+                  </div>
+                  <div className="poppins-regular-italic text-xs p-1 text-center w-42">
+                    By selecting "
+                    <span className="poppins-semibold-italic">
+                      Proceed to Payment Site
+                    </span>
+                    ", you will be redirected to an external merchant.
+                  </div>
+                  <Button
+                    outline
+                    className="m-2 w-2/3 poppins-semibold"
+                    color={"success"}
+                    onClick={ async () => {
+                      const response = await upgradePremium(user._id ,1, 1);
+                      if (response && response.url) {
+                        window.location.href = response.url
+                      }
+                    }}
+                  >
+                    Proceed to Payment Site
+                  </Button>
+                </div>
+              </Modal.Body>
+              <Modal.Footer />
+            </Modal>
+
             <div className="lg:w-11/12 h-full mx-auto my-12">
               <h1 className="poppins-semibold text-snow text-2xl">Features</h1>
               <Table className="bg-snow rounded-lg poppins-regular">
@@ -48,18 +105,26 @@ const Pricing = () => {
                 <Table.Body>
                   <Table.Row>
                     <TableCell>Access to free courses</TableCell>
-                    <TableCell><CircleCheck className="text-green-400" /></TableCell>
-                    <TableCell><CircleCheck className="text-green-400" /></TableCell>
+                    <TableCell>
+                      <CircleCheck className="text-green-400" />
+                    </TableCell>
+                    <TableCell>
+                      <CircleCheck className="text-green-400" />
+                    </TableCell>
                   </Table.Row>
                   <Table.Row>
                     <TableCell>Access to premium courses</TableCell>
                     <TableCell></TableCell>
-                    <TableCell><CircleCheck className="text-green-400" /></TableCell>
+                    <TableCell>
+                      <CircleCheck className="text-green-400" />
+                    </TableCell>
                   </Table.Row>
                   <Table.Row>
                     <TableCell>Unlimited practice questions</TableCell>
                     <TableCell></TableCell>
-                    <TableCell><CircleCheck className="text-green-400" /></TableCell>
+                    <TableCell>
+                      <CircleCheck className="text-green-400" />
+                    </TableCell>
                   </Table.Row>
                 </Table.Body>
               </Table>

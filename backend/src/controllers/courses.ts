@@ -1,8 +1,8 @@
 import { RequestHandler } from "express";
 import CourseModel from "../models/course";
-import UserModel from "../models/user"
 import createHttpError from "http-errors";
 import mongoose from "mongoose";
+import UserModel from "../models/user";
 
 //  GET ALL COURSES
 
@@ -27,14 +27,9 @@ export const getCourse: RequestHandler = async (req, res, next) => {
 
     const course = await CourseModel.findOne({ code: courseId }).exec();
 
-    
     if (!course) {
       throw createHttpError(404, "Course not found");
     }
-    
-    // if(!course.isPublished) {
-    //   throw createHttpError(404, "Course not Published")
-    // }
 
     res.status(200).send(course);
   } catch (error) {
@@ -49,8 +44,7 @@ interface CreateCourseBody {
   title?: string;
   description?: string;
   publisher?: string;
-  tier?: string;
-  price?: number | null;
+  tier?: number;
 }
 
 export const createCourse: RequestHandler<
@@ -64,7 +58,6 @@ export const createCourse: RequestHandler<
   const description = req.body.description;
   const publisher = req.body.publisher;
   const tier = req.body.tier;
-  const price = req.body.price;
 
   try {
     if (!code) {
@@ -73,11 +66,8 @@ export const createCourse: RequestHandler<
     if (!title) {
       throw createHttpError(400, "Course needs a title");
     }
-    if (!tier) {
+    if (tier == null) {
       throw createHttpError(400, "Course needs a tier");
-    }
-    if (tier === "premium" && !price) {
-      throw createHttpError(400, "Premium course needs a price");
     }
 
     const existingCode = await CourseModel.findOne({
@@ -105,7 +95,6 @@ export const createCourse: RequestHandler<
       description: description,
       publisher: publisher,
       tier: tier,
-      price: price,
     });
 
     res.status(201).json(newCourse);
@@ -126,8 +115,7 @@ interface UpdateCourseBody {
   description?: string;
   publisher?: string;
   status?: boolean;
-  tier?: string;
-  price?: number | null;
+  tier?: number;
 }
 
 export const updateCourse: RequestHandler<
@@ -143,8 +131,7 @@ export const updateCourse: RequestHandler<
   const newPublisher = req.body.publisher;
   const newStatus = req.body.status;
   const newTier = req.body.tier;
-  const newPrice = req.body.price;
-  console.log(courseId, newCode, newTitle, newDesc, newStatus);
+  // console.log(courseId, newCode, newTitle, newDesc, newStatus);
   try {
     // if (!mongoose.isValidObjectId(courseId)) {
     //   throw createHttpError(400, "Invalid course ID");
@@ -176,14 +163,11 @@ export const updateCourse: RequestHandler<
     if (newPublisher) {
       course.publisher = newPublisher;
     }
-    if (newStatus) {
+    if (newStatus != undefined) {
       course.isPublished = newStatus;
     }
-    if (newTier) {
+    if (newTier != undefined || null) {
       course.tier = newTier;
-    }
-    if (newPrice) {
-      course.price = newPrice;
     }
 
     const updatedCourse = await course.save();
@@ -212,6 +196,29 @@ export const deleteCourse: RequestHandler = async (req, res, next) => {
     await course.deleteOne();
 
     res.sendStatus(204);
+  } catch (error) {
+    next(error);
+  }
+};
+
+// GET ENROLLEES
+
+export const getEnrollees: RequestHandler = async (req, res, next) => {
+  const courseId = req.params.courseId;
+  console.log(courseId);
+  try {
+    const course = await CourseModel.findOne({ code: courseId }).exec();
+
+    if (!course) {
+      throw createHttpError(404, "Course not found");
+    }
+
+    const { enrolled } = await course.populate("enrolled");
+
+    if (!enrolled) {
+      throw createHttpError(404, "No enrollees found for this course");
+    }
+    res.status(200).send(enrolled);
   } catch (error) {
     next(error);
   }
@@ -264,50 +271,37 @@ export const enrollUser: RequestHandler<
 
 };
 
-export const getEnrollees: RequestHandler = async (req, res, next) => {
-  const courseId = req.params.courseId;
-  console.log(courseId);
-  try {
-    const course = await CourseModel.findOne({ code: courseId }).exec();
+interface UnenrollUserParams {
+  courseCode: string;
+}
 
-    if (!course) {
-      throw createHttpError(404, "Course not found");
-    }
-
-    const { enrolled } = await course.populate("enrolled");
-
-    if (!enrolled) {
-      throw createHttpError(404, "No enrollees found for this course");
-    }
-    res.status(200).send(enrolled);
-  } catch (error) {
-    next(error);
-  }
-};
+interface UnenrollUserBody {
+  username: string;
+}
 
 export const unenrollUser: RequestHandler<
-  EnrollUserParams,
+  UnenrollUserParams,
   unknown,
-  EnrollUserBody,
+  UnenrollUserBody,
   unknown
 > = async (req, res, next) => {
   const courseCode = req.params.courseCode;
   const username = req.body.username;
-  console.log(courseCode)
-  console.log(username)
+  console.log(courseCode);
+  console.log(username);
   try {
-    const course = await CourseModel.findOne({code: courseCode}).exec();
+    const course = await CourseModel.findOne({ code: courseCode }).exec();
     if (!course) {
       throw createHttpError(404, "Course not found");
     }
 
-    const user = await UserModel.findOne({username: username}).exec();
+    const user = await UserModel.findOne({ username: username }).exec();
     if (!user) {
       throw createHttpError(404, "User not found");
     }
 
     // Convert ObjectId to string for comparison
-    const enrolledUserIds = course.enrolled.map(id => id.toString());
+    const enrolledUserIds = course.enrolled.map((id) => id.toString());
 
     if (!enrolledUserIds.includes(user._id.toString())) {
       throw createHttpError(409, "User not enrolled");
@@ -315,9 +309,8 @@ export const unenrollUser: RequestHandler<
 
     course.enrolled.remove(user._id);
     await course.save();
-    res.status(200).json(course)
+    res.status(200).json(course);
   } catch (error) {
-    next(error)
+    next(error);
   }
-
 };

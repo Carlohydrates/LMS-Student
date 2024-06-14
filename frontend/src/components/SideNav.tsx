@@ -14,7 +14,7 @@ import { BarChart3, LayoutDashboard, BookOpenText } from "lucide-react";
 import { NavContext } from "../context/NavContext";
 import { useAuthContext } from "../hooks/useAuthContext";
 import { Alert, Button, Dropdown, Modal } from "flowbite-react";
-import { useDeleteUser } from "../hooks/useDeleteUser";
+import { useDeleteUser } from "../hooks/user/useDeleteUser";
 import { useLogout } from "../hooks/useLogout";
 
 const SideNav = () => {

@@ -61,7 +61,7 @@ export const signUp: RequestHandler<
       username: username,
       email: email,
       password: passwordHashed,
-      tier: 1,
+      tier: 0,
     });
     // req.session.userId = newUser._id;
     res.status(201).json(newUser);
@@ -108,7 +108,7 @@ export const login: RequestHandler<
     }
     // gen jwt
     const token = jwt.sign(
-      { name: user.username, email: user.email, _id: user._id },
+      { name: user.username, email: user.email, _id: user._id, tier: user.tier },
       process.env.JWT_SECRET!,
       {
         expiresIn: "1d",
@@ -225,6 +225,24 @@ export const deleteUser: RequestHandler<
     await user.deleteOne()
 
     res.sendStatus(204);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getUserTier: RequestHandler = async (req, res, next) => {
+  const userId = req.params.userId;
+  console.log(userId);
+  try {
+    const user = await UserModel.findById(userId).exec();
+
+    if (!user) {
+      throw createHttpError(404, "User not found");
+    }
+
+    const tier = user.tier
+
+    res.status(200).json({tier});
   } catch (error) {
     next(error);
   }

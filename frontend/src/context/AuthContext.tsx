@@ -28,6 +28,7 @@ interface DecodedJWT {
   _id: string;
   email: string;
   name: string;
+  tier: number;
 }
 
 export const AuthContext = createContext<AuthContextProps | undefined>(undefined);
@@ -79,9 +80,10 @@ export const AuthContextProvider: FC<AuthContextProviderProps> = ({
 
       if (user) {
         try {
-          const decodedUser: DecodedJWT = jwtDecode<DecodedJWT>(user);
-          const { name: username, email, _id } = decodedUser;
-          const userInfo = { _id, username, email };
+          const decodedUser: DecodedJWT = jwtDecode<DecodedJWT>(user)
+          // console.log("DECODED USER:", decodedUser)
+          const { name: username, email, _id, tier } = decodedUser;
+          const userInfo = { _id, username, email, tier };
           dispatch({ type: "LOGIN", payload: userInfo });
         } catch (error) {
           console.error("Failed to decode token", error);

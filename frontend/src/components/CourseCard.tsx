@@ -1,9 +1,11 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Card, Button, Badge } from "flowbite-react";
-import React from "react";
-import { useEnrollUser } from "../hooks/useEnrollUser";
+import React, { useEffect, useState } from "react";
+import { useEnrollUser } from "../hooks/user/useEnrollUser";
 import { useAuthContext } from "../hooks/useAuthContext";
-import { useGetCourses } from "../hooks/useGetCourses";
+import { useGetCourses } from "../hooks/course/useGetCourses";
+import { useNavigate } from "react-router-dom";
+import { useGetUserTier } from "../hooks/user/useGetUserTier";
 
 interface CourseCardProps {
   code: string;
@@ -11,7 +13,7 @@ interface CourseCardProps {
   description: string;
   isPublished: boolean;
   publisher: string;
-  tier: string;
+  tier: number;
   price?: number;
   enrolled: string[];
 }
@@ -29,6 +31,13 @@ const CourseCard: React.FC<CourseCardProps> = ({
   const { enrollUser } = useEnrollUser();
   const { triggerRefresh } = useGetCourses();
   const { user } = useAuthContext();
+  const navigate = useNavigate();
+
+  const { tier: userTier } = useGetUserTier(user._id);
+
+  // if (userTier === undefined || userTier === null) {
+  //   return <div>Loading...</div>;
+  // }
 
   if (isPublished) {
     return (
@@ -39,14 +48,16 @@ const CourseCard: React.FC<CourseCardProps> = ({
             <Badge
               className="inline-flex size-fit"
               size={"sm"}
-              color={tier === "free" ? "pink" : "indigo"}
+              color={tier === 0 ? "pink" : "indigo"}
             >
-              {tier === "free" ? "FREE" : "PREMIUM"}
+              {tier === 0 ? "FREE" : "PREMIUM"}
             </Badge>
           </div>
         </h1>
         <h2 className="poppins-semibold-italic text-lg text-snow">{title}</h2>
-        <h3 className="poppins-semibold-italic text-sm text-black_olive mb-2">Publisher: <span className="poppins-regular-italic">{publisher}</span></h3>
+        <h3 className="poppins-semibold-italic text-sm text-black_olive mb-2">
+          Publisher: <span className="poppins-regular-italic">{publisher}</span>
+        </h3>
         <div className="text-ellipsis overflow-hidden line-clamp-5 text-justify h-30 w-full text-snow">
           {description}
           Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tempora
@@ -54,15 +65,27 @@ const CourseCard: React.FC<CourseCardProps> = ({
           non dolore deserunt nihil? Voluptatibus debitis inventore autem. Cum
           deleniti quod aspernatur maxime!
         </div>
-        <Button
-          className="flex lg:w-40 mx-auto mt-4 bg-verdigris text-snow"
-          onClick={() => {
-            enrollUser(code, user.username);
-            triggerRefresh();
-          }}
-        >
-          Enroll Course
-        </Button>
+
+        {userTier! >= tier ? (
+          <Button
+            className="flex size-fit mx-auto mt-4 bg-verdigris text-snow"
+            onClick={() => {
+              enrollUser(code, user.username);
+              triggerRefresh();
+            }}
+          >
+            Enroll Course
+          </Button>
+        ) : (
+          <Button
+            className="flex size-fit mx-auto mt-4 bg-verdigris text-snow"
+            onClick={() => {
+              navigate("/pricing");
+            }}
+          >
+            Upgrade now
+          </Button>
+        )}
       </div>
     );
   }

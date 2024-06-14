@@ -3,12 +3,12 @@ import { useNavigate, useParams } from "react-router-dom";
 import { NavContext } from "../context/NavContext";
 import SideNav from "../components/SideNav";
 import HeaderLoggedIn from "../components/HeaderLoggedIn";
-import { useGetCourse } from "../hooks/useGetCourse";
+import { useGetCourse } from "../hooks/course/useGetCourse";
 import { useEffect, useState } from "react";
 import { Accordion, Modal, Table, Button } from "flowbite-react";
 import { Trash2 } from "lucide-react";
-import { useUnenrollUser } from "../hooks/useUnenrollUser";
-import { useGetEnrollees } from "../hooks/useGetEnrollees";
+import { useUnenrollUser } from "../hooks/user/useUnenrollUser";
+import { useGetEnrollees } from "../hooks/course/useGetEnrollees";
 import { NotFoundPage } from "./NotFoundPage";
 import { useAuthContext } from "../hooks/useAuthContext";
 

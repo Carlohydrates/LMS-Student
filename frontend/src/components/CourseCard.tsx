@@ -35,9 +35,11 @@ const CourseCard: React.FC<CourseCardProps> = ({
 
   const { tier: userTier } = useGetUserTier(user._id);
 
-  // if (userTier === undefined || userTier === null) {
-  //   return <div>Loading...</div>;
-  // }
+  if (userTier === undefined) {
+    return <div>Loading...</div>;
+  }
+
+  console.log(userTier)
 
   if (isPublished) {
     return (

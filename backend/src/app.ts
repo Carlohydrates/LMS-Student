@@ -10,6 +10,7 @@ import Stripe from "stripe";
 import PremiumTierModel from "./models/premium_tier";
 import UserModel from "./models/user"
 import bodyParser from "body-parser";
+import { v4 as uuidv4 } from 'uuid';
 
 const app = express();
 
@@ -43,6 +44,7 @@ app.post("/create-checkout-session/:userId", async (req, res, next) => {
     throw createHttpError(401, "User not found");
   }
 
+  const token = uuidv4(); // Generate unique token
   try {
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
@@ -58,12 +60,12 @@ app.post("/create-checkout-session/:userId", async (req, res, next) => {
           quantity: item.quantity,
         };
       }),
-      success_url: `${process.env.SUCCESS_PAGE_URL}`,
-      cancel_url: `${process.env.CANCEL_PAGE_URL}`,
+      success_url: `${process.env.SUCCESS_PAGE_URL}?transaction=success&token=${token}`,
+      cancel_url: `${process.env.CANCEL_PAGE_URL}?transaction=cancelled`,
       metadata: { _id: userId},
       
     });
-    res.json({ url: session.url });
+    res.json({ url: session.url, token });
   } catch (error) {
     next(error);
   }

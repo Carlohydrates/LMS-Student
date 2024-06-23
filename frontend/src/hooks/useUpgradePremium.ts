@@ -1,4 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+interface CheckoutSessionResponse {
+  url: string;
+  token: string;
+}
 
 export const useUpgradePremium = () => {
 
@@ -12,7 +16,10 @@ export const useUpgradePremium = () => {
         body: JSON.stringify({ items: [{ id, quantity }]}),
       });
       if (res.ok) {
-        return res.json();
+        const data: CheckoutSessionResponse = await res.json();
+        console.log('Checkout session response:', data); // Add this line to debug
+        localStorage.setItem('transactionToken', data.token);
+        window.location.href = data.url;
       } else {
         console.log("Failed to create checkout session")
       }

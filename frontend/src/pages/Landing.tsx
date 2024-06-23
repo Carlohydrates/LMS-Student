@@ -8,7 +8,8 @@ const Landing = () => {
   return (
     <div className="flex flex-col w-screen h-screen">
       <HeaderLoggedOut />
-      <div className="flex flex-col w-screen h-screen bg-[url('/peaks1.svg')] overflow-y-auto bg-repeat-y bg-cover bg-local scroll-smooth">
+
+      <div className="flex-0 flex-col w-screen h-screen bg-[url('/peaks1.svg')] overflow-y-auto bg-no-repeat bg-cover bg-local scroll-smooth">
         <div className="flex-col w-2/3 h-1/2 p-10 ml-24 mt-24 poppins-semibold">
           <p className="flex text-6xl text-black_olive-200">
             Elevate Your Learning Experience: Dive into Knowledge with Course
@@ -44,6 +45,12 @@ const Landing = () => {
           reprehenderit similique eum dolores facere perferendis quia
           repudiandae voluptatem ab nulla?
         </div>
+      </div>
+
+      <div className="flex-1 flex-col w-screen h-screen bg-[url('/peaks2.svg')] bg-cover bg-no-repeat bg-center">
+        <div></div>
+        <div></div>
+        <div></div>
       </div>
     </div>
   );

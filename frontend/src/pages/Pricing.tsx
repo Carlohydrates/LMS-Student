@@ -5,15 +5,33 @@ import HeaderLoggedIn from "../components/HeaderLoggedIn";
 import { Button, Card, Modal, Table, TableCell } from "flowbite-react";
 import { CircleCheck, ShoppingCart } from "lucide-react";
 import { useGetPrice } from "../hooks/premium/useGetPrice";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useUpgradePremium } from "../hooks/useUpgradePremium";
 import { useAuthContext } from "../hooks/useAuthContext";
+import { useNavigate } from "react-router-dom";
 
 const Pricing = () => {
   const { price } = useGetPrice();
   const [checkoutModal, setCheckoutModal] = useState(false);
+  const [successModal, setSuccessModal] = useState(false);
   const { upgradePremium } = useUpgradePremium();
   const { user } = useAuthContext();
+  const navigate = useNavigate();
+  useEffect(() => {
+    const queryParams = new URLSearchParams(location.search);
+    const transactionStatus = queryParams.get("transaction");
+    const token = queryParams.get("token");
+    const storedToken = localStorage.getItem("transactionToken");
+    if (!storedToken) {
+      navigate(location.pathname, { replace: true });
+    }
+    if (transactionStatus === "success" && storedToken === token) {
+      setSuccessModal(true);
+    }
+    if (queryParams.get("transaction") === "cancelled") {
+      navigate(location.pathname, { replace: true });
+    }
+  }, [location, navigate]);
 
   return (
     <main className="flex flex-row">
@@ -80,11 +98,8 @@ const Pricing = () => {
                     outline
                     className="m-2 w-2/3 poppins-semibold"
                     color={"success"}
-                    onClick={ async () => {
-                      const response = await upgradePremium(user._id ,1, 1);
-                      if (response && response.url) {
-                        window.location.href = response.url
-                      }
+                    onClick={async () => {
+                      upgradePremium(user._id, 1, 1);
                     }}
                   >
                     Proceed to Payment Site
@@ -92,6 +107,29 @@ const Pricing = () => {
                 </div>
               </Modal.Body>
               <Modal.Footer />
+            </Modal>
+
+            <Modal
+              show={successModal}
+              onClose={() => {
+                localStorage.removeItem("transactionToken");
+                setSuccessModal(false);
+              }}
+            >
+              <Modal.Header>Payment Successful</Modal.Header>
+              <Modal.Body>
+                <p>Thank you for your purchase!</p>
+              </Modal.Body>
+              <Modal.Footer>
+                <Button
+                  onClick={() => {
+                    localStorage.removeItem("transactionToken");
+                    setSuccessModal(false);
+                  }}
+                >
+                  Close
+                </Button>
+              </Modal.Footer>
             </Modal>
 
             <div className="lg:w-11/12 h-full mx-auto my-12">

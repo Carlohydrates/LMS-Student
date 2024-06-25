@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Card, Button, Badge } from "flowbite-react";
+import { Card, Button, Badge, Spinner } from "flowbite-react";
 import React, { useEffect, useState } from "react";
 import { useEnrollUser } from "../hooks/user/useEnrollUser";
 import { useAuthContext } from "../hooks/useAuthContext";
@@ -36,10 +36,8 @@ const CourseCard: React.FC<CourseCardProps> = ({
   const { tier: userTier } = useGetUserTier(user._id);
 
   if (userTier === undefined) {
-    return <div>Loading...</div>;
+    return <Spinner size={"xl"}></Spinner>;
   }
-
-  console.log(userTier)
 
   if (isPublished) {
     return (

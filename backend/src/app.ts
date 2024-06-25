@@ -71,16 +71,13 @@ app.post("/create-checkout-session/:userId", async (req, res, next) => {
   }
 });
 
-// This is your Stripe CLI webhook secret for testing your endpoint locally.
-const endpointSecret: string = "whsec_de40fa177817b6b19250da94952456dcb629ea83c84c663fc14a5b3730239d86";
-
 app.post('/webhook', bodyParser.raw({ type: 'application/json' }), async (request: Request, response: Response) => {
   const sig: any = request.headers['stripe-signature'];
 
   let event: Stripe.Event;
 
   try {
-    event = stripe.webhooks.constructEvent(request.body, sig, endpointSecret);
+    event = stripe.webhooks.constructEvent(request.body, sig, process.env.STRIPE_WH_SECRET!);
   } catch (err: any) {
     console.error(`Webhook signature verification failed.`, err.message);
     response.status(400).send(`Webhook Error: ${err.message}`);

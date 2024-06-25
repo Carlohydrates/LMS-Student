@@ -114,7 +114,7 @@ const SideNav = () => {
           id={3}
           active={activeListItem === 3}
           setActiveListItem={setActiveListItem}
-          alert
+          // alert
         />
         <SideNavItem
           icon={<BarChart3 size={25} />}
@@ -160,15 +160,15 @@ const SideNav = () => {
             </span>
           </div>
           <Dropdown
-            label=""
+            label="dropdown"
             placement="top"
             dismissOnClick={false}
             renderTrigger={() => (
-              <MoreVertical size={20} className="hover:cursor-pointer" />
+              <MoreVertical size={20} className="hover:cursor-pointer mx-2" />
             )}
           >
             <Dropdown.Item
-              className="text-red-600 gap-2 items-center"
+              className="text-red-600 gap-2 items-end flex overflow-hidden"
               onClick={() => setOpenConfirmModal(true)}
             >
               <UserRoundX />

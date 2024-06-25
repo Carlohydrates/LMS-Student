@@ -2,11 +2,12 @@ import { NavContext } from "../context/NavContext";
 import HeaderLoggedIn from "../components/HeaderLoggedIn";
 import SideNav from "../components/SideNav";
 import { useAuthContext } from "../hooks/useAuthContext";
+import { Spinner } from "flowbite-react";
 
 function App() {
   const { user } = useAuthContext();
   if (!user) {
-    return <>Loading...</>;
+    return <Spinner size={"xl"}></Spinner>;
   }
   return (
     <div className="flex flex-row w-full">

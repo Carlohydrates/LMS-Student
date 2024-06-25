@@ -17,7 +17,7 @@ export const useUpgradePremium = () => {
       });
       if (res.ok) {
         const data: CheckoutSessionResponse = await res.json();
-        console.log('Checkout session response:', data); // Add this line to debug
+        // console.log('Checkout session response:', data);
         localStorage.setItem('transactionToken', data.token);
         window.location.href = data.url;
       } else {

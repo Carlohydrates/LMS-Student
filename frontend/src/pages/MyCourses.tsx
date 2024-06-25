@@ -4,7 +4,7 @@ import { NavContext } from "../context/NavContext";
 import HeaderLoggedIn from "../components/HeaderLoggedIn";
 import { useGetCourses } from "../hooks/course/useGetCourses";
 import { useAuthContext } from "../hooks/useAuthContext";
-import { Badge, Button } from "flowbite-react";
+import { Badge, Button, Spinner } from "flowbite-react";
 import { useUnenrollUser } from "../hooks/user/useUnenrollUser";
 import { useNavigate } from "react-router-dom";
 
@@ -19,7 +19,7 @@ const MyCourses = () => {
         <SideNav />
         <div className="flex flex-col lg:w-screen lg:h-screen overflow-y-auto bg-black_olive-600 pb-20">
           <HeaderLoggedIn />
-          {courses && (
+          {courses ? (
             <>
               <div className="flex mx-auto lg:mt-24 text-2xl text-snow poppins-semibold">
                 Enrolled Courses
@@ -78,6 +78,8 @@ const MyCourses = () => {
                   ))}
               </div>
             </>
+          ) : (
+            <Spinner size={"xl"}></Spinner>
           )}
         </div>
       </NavContext.Provider>

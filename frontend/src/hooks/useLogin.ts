@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
 import { useAuthContext } from "./useAuthContext";
 import { useNavigate } from "react-router-dom";
@@ -26,7 +24,7 @@ export const useLogin = () => {
       });
 
       if (!response.ok) {
-        toast.error("Invalid credentials")
+        toast.error("Invalid credentials");
         const errorData = await response.json();
         setError(errorData.error);
         setIsLoading(true);

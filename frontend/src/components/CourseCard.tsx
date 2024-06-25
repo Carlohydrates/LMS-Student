@@ -1,6 +1,5 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import { Card, Button, Badge, Spinner } from "flowbite-react";
-import React, { useEffect, useState } from "react";
+import { Button, Badge, Spinner } from "flowbite-react";
+import React from "react";
 import { useEnrollUser } from "../hooks/user/useEnrollUser";
 import { useAuthContext } from "../hooks/useAuthContext";
 import { useGetCourses } from "../hooks/course/useGetCourses";
@@ -25,8 +24,6 @@ const CourseCard: React.FC<CourseCardProps> = ({
   isPublished,
   publisher,
   tier,
-  price,
-  enrolled,
 }) => {
   const { enrollUser } = useEnrollUser();
   const { triggerRefresh } = useGetCourses();

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useContext, useEffect, useState } from "react";
 import {
   BookUser,
@@ -184,7 +183,11 @@ const SideNav = () => {
       >
         <Modal.Body>
           <div className="flex flex-col justify-center text-center items-center gap-10 p-2 poppins-semibold lg:text-2xl text-red-600">
-            <Alert color="failure" icon={TriangleAlert} className="poppins-extrabold">
+            <Alert
+              color="failure"
+              icon={TriangleAlert}
+              className="poppins-extrabold"
+            >
               WARNING: You are about to delete your account.
             </Alert>
             <div className="flex flex-row gap-4 lg:text-lg">

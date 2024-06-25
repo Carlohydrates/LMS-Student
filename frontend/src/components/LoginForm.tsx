@@ -1,17 +1,16 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { GoogleLogin } from "@react-oauth/google";
 import { Button, Label, TextInput } from "flowbite-react";
-import { FormEvent, useState, useEffect } from "react";
-import { useLogin } from "../hooks/useLogin";
-import { useGoogleLogin } from "../hooks/useGoogleLogin";
-import { Slide, ToastContainer, toast } from "react-toastify";
+import { FormEvent, useState } from "react";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useGoogleLogin } from "../hooks/useGoogleLogin";
+import { useLogin } from "../hooks/useLogin";
 
 const LoginForm = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const { login, error, isLoading } = useLogin();
-  const { googleLogin, googleError } = useGoogleLogin();
+  const { login } = useLogin();
+  const { googleLogin } = useGoogleLogin();
   const loginUser = async (e: FormEvent) => {
     e.preventDefault();
     toast.dismiss();

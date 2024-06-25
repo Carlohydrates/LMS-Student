@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import SideNav from "../components/SideNav";
 import { NavContext } from "../context/NavContext";
 import HeaderLoggedIn from "../components/HeaderLoggedIn";
@@ -182,7 +181,9 @@ const Pricing = () => {
             </Modal>
 
             <div className="lg:w-11/12 h-full mx-auto my-12">
-              <h1 className="poppins-semibold text-snow text-2xl flex justify-center">Features</h1>
+              <h1 className="poppins-semibold text-snow text-2xl flex justify-center">
+                Features
+              </h1>
               <Table hoverable className="bg-snow rounded-lg poppins-regular">
                 <Table.Head>
                   <Table.HeadCell></Table.HeadCell>

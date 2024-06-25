@@ -1,20 +1,13 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
+import CourseCard from "../components/CourseCard";
+import HeaderLoggedIn from "../components/HeaderLoggedIn";
 import SideNav from "../components/SideNav";
 import { NavContext } from "../context/NavContext";
-import HeaderLoggedIn from "../components/HeaderLoggedIn";
-import { Badge, Button, Carousel } from "flowbite-react";
 import { useGetCourses } from "../hooks/course/useGetCourses";
-import CourseCard from "../components/CourseCard";
 import { useAuthContext } from "../hooks/useAuthContext";
-import { useUnenrollUser } from "../hooks/user/useUnenrollUser";
-import { useNavigate } from "react-router-dom";
-import { ChevronsLeft, ChevronsRight } from "lucide-react";
 
 const Courses = () => {
   const { user } = useAuthContext();
   const { courses } = useGetCourses();
-  const { unenrollUser } = useUnenrollUser();
-  const navigate = useNavigate();
 
   return (
     <main className="flex flex-row w-full">

@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
 import { useAuthContext } from "./useAuthContext";
 import { useNavigate } from "react-router-dom";
@@ -36,7 +34,7 @@ export const useGoogleLogin = () => {
 
     console.log(credentials);
     const userCredentials: DataCredentials = jwtDecode(credentials.credential!);
-    const { name, email } = userCredentials;
+    const { email } = userCredentials;
 
     try {
       const response = await fetch(
@@ -62,7 +60,7 @@ export const useGoogleLogin = () => {
         navigate("/dashboard");
       } else {
         toast.error("Google Account is not Registered");
-        navigate("/signup")
+        navigate("/signup");
         googleLogout();
         console.log("Google user logged out");
       }

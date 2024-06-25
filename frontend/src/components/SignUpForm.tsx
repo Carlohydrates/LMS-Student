@@ -1,6 +1,5 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Button, Label, TextInput } from "flowbite-react";
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useState } from "react";
 import { useSignup } from "../hooks/useSignup";
 import { GoogleLogin } from "@react-oauth/google";
 import { useGoogleSignup } from "../hooks/useGoogleSignup";

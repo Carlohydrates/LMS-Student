@@ -1,6 +1,5 @@
 import { toast } from "react-toastify";
 
-/* eslint-disable @typescript-eslint/no-unused-vars */
 export const useUnenrollUser = () => {
   const unenrollUser = async (courseCode: string, username: string) => {
     try {

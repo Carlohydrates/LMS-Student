@@ -1,8 +1,5 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useState } from "react";
-import { Course } from "../models/course";
-import { toast } from "react-toastify";
+import { Course } from "../../models/course";
 
 export const useGetCourse = () => {
   const [course, setCourse] = useState<Course>();

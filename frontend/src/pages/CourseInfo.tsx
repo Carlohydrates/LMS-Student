@@ -1,20 +1,16 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { NavContext } from "../context/NavContext";
 import SideNav from "../components/SideNav";
 import HeaderLoggedIn from "../components/HeaderLoggedIn";
 import { useGetCourse } from "../hooks/course/useGetCourse";
-import { useEffect, useState } from "react";
-import { Accordion, Modal, Table, Button } from "flowbite-react";
-import { Trash2 } from "lucide-react";
-import { useUnenrollUser } from "../hooks/user/useUnenrollUser";
+import { useEffect } from "react";
+import { Accordion, Table } from "flowbite-react";
 import { useGetEnrollees } from "../hooks/course/useGetEnrollees";
 import { NotFoundPage } from "./NotFoundPage";
 import { useAuthContext } from "../hooks/useAuthContext";
 
 const CourseInfo = () => {
   const params = useParams();
-  const navigate = useNavigate();
   const { id: courseCode } = params;
   const { course, getCourse } = useGetCourse();
   const { enrollees, getEnrollees } = useGetEnrollees();

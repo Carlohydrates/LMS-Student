@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useState } from "react";
 import { User } from "../../models/user";
 
@@ -32,5 +30,5 @@ export const useGetEnrollees = () => {
     }
   };
 
-  return { getEnrollees, enrollees };
+  return { getEnrollees, enrollees, error };
 };

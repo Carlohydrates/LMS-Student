@@ -1,7 +1,6 @@
 import { toast } from "react-toastify";
 import { useGetCourses } from "../course/useGetCourses";
 
-/* eslint-disable @typescript-eslint/no-unused-vars */
 export const useEnrollUser = () => {
   const { triggerRefresh } = useGetCourses();
   const enrollUser = async (courseCode: string, username: string) => {

@@ -1,11 +1,7 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useEffect, useState } from "react";
-import { User } from "../../models/user";
 
 export const useGetUserTier = (userId: string) => {
   const [tier, setTier] = useState();
-  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const getUserTier = async () => {
@@ -29,7 +25,6 @@ export const useGetUserTier = (userId: string) => {
         setTier(data.tier);
       } catch (error: any) {
         console.error("Error fetching user tier:", error.message);
-        setError(error.message);
       }
     };
     getUserTier();

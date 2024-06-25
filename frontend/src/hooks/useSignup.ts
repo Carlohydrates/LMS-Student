@@ -1,13 +1,10 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useAuthContext } from "./useAuthContext";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 export const useSignup = () => {
   const [error, setError] = useState(null);
-  const [successMessage, setSuccessMessage] = useState("FAIL");
   const [isLoading, setIsLoading] = useState<boolean | null>(null);
   const { dispatch } = useAuthContext();
 
@@ -31,7 +28,7 @@ export const useSignup = () => {
         toast.error("Error signing up.");
         throw new Error(errorData.error);
       } else {
-        const { user, token } = await response.json();
+        const { user } = await response.json();
 
         // Update the auth context
         dispatch({ type: "LOGIN", payload: user });

@@ -1,11 +1,8 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
-import { useAuthContext } from "./useAuthContext";
 import { useNavigate } from "react-router-dom";
 import { CredentialResponse, googleLogout } from "@react-oauth/google";
 import { jwtDecode } from "jwt-decode";
-import { Slide, toast } from "react-toastify";
+import { toast } from "react-toastify";
 
 interface DataCredentials {
   aud: string;

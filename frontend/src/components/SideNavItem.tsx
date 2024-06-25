@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import { Dropdown } from "flowbite-react";
 import { ReactNode } from "react";
 import { Link } from "react-router-dom";
 

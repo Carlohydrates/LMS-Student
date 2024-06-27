@@ -38,7 +38,7 @@ const CourseCard: React.FC<CourseCardProps> = ({
 
   if (isPublished) {
     return (
-      <div className="bg-[url('/peaks1.svg')] rounded-xl lg:w-[26rem] lg:h-80 text-black_olive poppins-regular p-7 hover:shadow-black_olive hover:shadow-md">
+      <div className="bg-verdigris rounded-xl lg:w-[26rem] lg:h-80 text-black_olive poppins-regular p-7 hover:shadow-black hover:shadow-lg transition-all ease-in-out hover:-translate-y-2 duration-200 delay-150">
         <h1 className="w-full h-10 poppins-extrabold justify-between">
           <div className="flex justify-between items-start text-3xl">
             {code}
@@ -55,7 +55,7 @@ const CourseCard: React.FC<CourseCardProps> = ({
         <h3 className="poppins-semibold-italic text-sm text-black_olive mb-2">
           Publisher: <span className="poppins-regular-italic">{publisher}</span>
         </h3>
-        <div className="text-ellipsis overflow-hidden line-clamp-5 text-justify h-30 w-full text-snow">
+        <div className="text-ellipsis overflow-hidden line-clamp-5 text-justify h-30 w-full text-black_olive">
           {description}
           Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tempora
           voluptatem quibusdam dolorem, vero, eum accusantium earum perspiciatis
@@ -65,7 +65,7 @@ const CourseCard: React.FC<CourseCardProps> = ({
 
         {userTier! >= tier ? (
           <Button
-            className="flex size-fit mx-auto mt-4 bg-verdigris text-snow"
+            className="flex size-fit mx-auto mt-4 bg-black_olive text-snow"
             onClick={() => {
               enrollUser(code, user.username);
               triggerRefresh();
@@ -75,7 +75,7 @@ const CourseCard: React.FC<CourseCardProps> = ({
           </Button>
         ) : (
           <Button
-            className="flex size-fit mx-auto mt-4 bg-verdigris text-snow"
+            className="flex size-fit mx-auto mt-4 bg-black_olive text-snow"
             onClick={() => {
               navigate("/pricing");
             }}

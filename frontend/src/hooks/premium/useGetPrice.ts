@@ -1,18 +1,18 @@
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
-export const useGetPrice = () => {
+export const useGetPrice = (tier: number) => {
   const [price, setPrice] = useState<number>();
 
   const fetchPrice = async () => {
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_PREMIUM_TIER_API}/price`,
+        `${import.meta.env.VITE_TIER_API}/price?tier=${tier}`,
         {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
-          },
+          }
         }
       );
 
@@ -24,7 +24,7 @@ export const useGetPrice = () => {
       const data = await response.json();
       setPrice(data);
     } catch (error) {
-      console.error("Error fetching premium tier price:", error);
+      console.error("Error fetching tier price:", error);
     }
   };
 

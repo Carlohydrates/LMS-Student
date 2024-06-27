@@ -16,11 +16,11 @@ const MyCourses = () => {
     <main className="flex flex-row">
       <NavContext.Provider value={"my courses"}>
         <SideNav />
-        <div className="flex flex-col lg:w-screen lg:h-screen overflow-y-auto bg-black_olive-600 pb-20">
+        <div className="flex flex-col lg:w-screen lg:h-screen overflow-y-auto bg-black_olive pb-20">
           <HeaderLoggedIn />
           {courses ? (
             <>
-              <div className="flex mx-auto lg:mt-24 text-2xl text-snow poppins-semibold">
+              <div className="flex mx-auto p-8 text-2xl text-snow poppins-semibold">
                 Enrolled Courses
               </div>
               <div className="flex flex-row flex-wrap gap-12 lg:w-full lg:h-full justify-center">
@@ -32,7 +32,7 @@ const MyCourses = () => {
                   .map((course) => (
                     <div
                       key={course._id}
-                      className="bg-[url('/peaks2.svg')] rounded-xl lg:w-[26rem] lg:h-80 text-snow poppins-regular p-7 hover:shadow-verdigris hover:shadow-md"
+                      className="bg-verdigris rounded-xl lg:w-[26rem] lg:h-80 text-snow poppins-regular p-7 hover:shadow-black hover:shadow-lg transition-all ease-in-out hover:-translate-y-2 duration-200 delay-150"
                     >
                       <h1 className="w-full h-10 poppins-extrabold justify-between">
                         <div className="flex justify-between items-start lg:text-3xl">
@@ -46,10 +46,10 @@ const MyCourses = () => {
                           </Badge>
                         </div>
                       </h1>
-                      <h2 className="poppins-semibold-italic lg:text-lg text-verdigris">
+                      <h2 className="poppins-semibold-italic lg:text-lg text-black_olive">
                         {course.title}
                       </h2>
-                      <div className="text-ellipsis overflow-hidden line-clamp-[6] text-justify h-30 w-full text-snow">
+                      <div className="text-ellipsis overflow-hidden line-clamp-[6] text-justify h-30 w-full text-black_olive">
                         {course.description}
                         Lorem ipsum dolor sit amet, consectetur adipisicing
                         elit. Tempora voluptatem quibusdam dolorem, vero, eum
@@ -59,7 +59,7 @@ const MyCourses = () => {
                       </div>
                       <div className="inline-flex py-4 w-full justify-evenly">
                         <Button
-                          className="bg-verdigris hover:bg-black-800"
+                          className="bg-snow text-black_olive"
                           onClick={() => navigate(`/courses/${course.code}`)}
                         >
                           View Course

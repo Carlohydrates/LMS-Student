@@ -13,12 +13,12 @@ const Courses = () => {
     <main className="flex flex-row w-full">
       <NavContext.Provider value={"course catalog"}>
         <SideNav />
-        <div className="flex flex-col lg:w-screen lg:h-screen overflow-y-auto bg-black_olive-600 pb-20">
+        <div className="flex flex-col lg:w-screen lg:h-screen overflow-y-auto bg-black_olive pb-20">
           <HeaderLoggedIn />
 
           {courses ? (
             <>
-              <div className="mx-auto lg:mt-24 text-2xl text-snow poppins-semibold">
+              <div className="flex mx-auto p-8 text-2xl text-snow poppins-semibold">
                 All Courses
               </div>
               <div className="flex flex-row flex-wrap gap-12 lg:w-full lg:h-full justify-center">

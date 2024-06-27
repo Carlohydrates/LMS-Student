@@ -1,10 +1,35 @@
 import { RequestHandler } from "express";
 import createHttpError from "http-errors";
-import PremiumTierModel from "../models/premium_tier";
+import TierModel from "../models/tier";
 
-export const getPrice: RequestHandler = async (req, res, next) => {
+// For creation of new tiers via Postman
+
+// export const createNewTier: RequestHandler = async (req, res, next) => {
+//   try {
+//     const newTier = await TierModel.create({
+//       tier: 2,
+//       price: 20,
+//     });
+
+//     res.status(200).json(newTier);
+//   } catch (error) {
+//     next(error);
+//   }
+// };
+
+interface PriceProps {
+  tier: number;
+}
+
+export const getPrice: RequestHandler<
+  unknown,
+  unknown,
+  unknown,
+  PriceProps
+> = async (req, res, next) => {
+  const target = req.query.tier;
   try {
-    const tier = await PremiumTierModel.findOne();
+    const tier = await TierModel.findOne({ tier: target });
 
     if (!tier) {
       throw createHttpError(401, "Tier not found");
@@ -20,7 +45,7 @@ export const getPrice: RequestHandler = async (req, res, next) => {
 
 export const getUserCount: RequestHandler = async (req, res, next) => {
   try {
-    const tier = await PremiumTierModel.findOne();
+    const tier = await TierModel.findOne();
 
     if (!tier) {
       throw createHttpError(401, "Tier not found");
@@ -35,6 +60,7 @@ export const getUserCount: RequestHandler = async (req, res, next) => {
 };
 
 interface UpdatePriceProps {
+  tier: number;
   newPrice: number;
 }
 
@@ -42,14 +68,18 @@ export const updatePrice: RequestHandler<
   unknown,
   unknown,
   UpdatePriceProps,
-  unknown
+  PriceProps
 > = async (req, res, next) => {
+  const target = req.query.tier;
   const newPrice = req.body.newPrice;
   try {
+    // if (tier) {
+    //   throw createHttpError(401, "Premium Tier needs a price");
+    // }
     if (!newPrice) {
       throw createHttpError(401, "Premium Tier needs a price");
     }
-    const tier = await PremiumTierModel.findOne();
+    const tier = await TierModel.findOne({ tier: target });
 
     if (!tier) {
       throw createHttpError(401, "Tier not found");

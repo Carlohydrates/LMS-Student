@@ -7,7 +7,7 @@ const Grades = () => {
     <main className="flex flex-row">
       <NavContext.Provider value={"grades"}>
         <SideNav />
-        <div className="flex flex-col lg:w-screen lg:h-screen overflow-y-auto bg-black_olive-600 pb-20">
+        <div className="flex flex-col lg:w-screen lg:h-screen overflow-y-auto bg-black_olive pb-20">
           <HeaderLoggedIn />
         </div>
       </NavContext.Provider>

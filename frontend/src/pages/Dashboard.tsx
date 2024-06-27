@@ -13,7 +13,7 @@ function App() {
     <div className="flex flex-row w-full">
       <NavContext.Provider value={"dashboard"}>
         <SideNav />
-        <div className="flex flex-col lg:w-screen lg:h-screen overflow-y-auto bg-black_olive-600 pb-20">
+        <div className="flex flex-col lg:w-screen lg:h-screen overflow-y-auto bg-black_olive pb-20">
           <HeaderLoggedIn />
 
         </div>

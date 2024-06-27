@@ -11,7 +11,7 @@ const HeaderLoggedIn = () => {
     logout();
   };
   return (
-    <div className="flex sticky top-0 h-14 bg-black_olive py-4 px-4 justify-between text-snow z-10">
+    <div className="flex sticky top-0 h-14 bg-black_olive border-b py-4 px-4 justify-between text-snow z-10">
       <div
         className="hover:scale-110 hover:cursor-pointer"
         onClick={() => navigate(-1)}

@@ -31,8 +31,8 @@ const SideNavItem: React.FC<Props> = ({
           transition-colors group
           ${
             active
-              ? "bg-gradient-to-tr from-verdigris to-snow text-black_olive transition-all"
-              : "hover:bg-snow-500 hover:text-black_olive-500 text-snow-500 "
+              ? "bg-verdigris text-black_olive transition-all"
+              : "hover:bg-verdigris-900 hover:text-black_olive-500 text-snow-500 "
           }
       `}
         >

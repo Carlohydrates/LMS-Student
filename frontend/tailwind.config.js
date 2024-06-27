@@ -45,7 +45,7 @@ export default {
           900: "#fffefe",
         },
         verdigris: {
-          DEFAULT: "#62bbc1",
+          DEFAULT: "#82c8cd",
           100: "#11282a",
           200: "#215053",
           300: "#32787d",

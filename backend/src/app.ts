@@ -3,25 +3,23 @@ import express, { NextFunction, Request, Response } from "express";
 import morgan from "morgan";
 import courseRoutes from "./routes/courses";
 import userRoutes from "./routes/users";
-import premiumTierRoutes from "./routes/premium_tier";
+import tierRoutes from "./routes/tier";
 import createHttpError, { isHttpError } from "http-errors";
 import cors from "cors";
 import Stripe from "stripe";
-import PremiumTierModel from "./models/premium_tier";
-import UserModel from "./models/user"
+import TierModel from "./models/tier";
+import UserModel from "./models/user";
 import bodyParser from "body-parser";
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 
 const app = express();
 
 //  must be used before app.use(express.json());
-app.use('/webhook', express.raw({ type: 'application/json' }));
+app.use("/webhook", express.raw({ type: "application/json" }));
 
 app.use(morgan("dev"));
 app.use(express.json());
 app.use(cors());
-
-
 
 //  STRIPE
 const stripe = new Stripe(`${process.env.STRIPE_PRIVATE_KEY}`, {
@@ -29,14 +27,15 @@ const stripe = new Stripe(`${process.env.STRIPE_PRIVATE_KEY}`, {
 });
 
 app.post("/create-checkout-session/:userId", async (req, res, next) => {
-  const tier: any = await PremiumTierModel.findOne();
+  const tiers: any = await TierModel.find();
 
-  if (!tier) {
-    throw createHttpError(401, "Tier not found");
+  if (!tiers) {
+    throw createHttpError(401, "Tiers not found");
   }
 
   const storeItems = new Map([
-    [1, { price: tier.price * 100, name: "Premium Tier" }],
+    [1, { price: tiers[1].price * 100, name: "Basic Tier" }],
+    [2, { price: tiers[2].price * 100, name: "Premium Tier" }],
   ]);
 
   const userId = req.params.userId;
@@ -50,7 +49,9 @@ app.post("/create-checkout-session/:userId", async (req, res, next) => {
       payment_method_types: ["card"],
       mode: "payment",
       line_items: req.body.items.map((item: any) => {
+        console.log(item.id)
         const storeItem = storeItems.get(item.id);
+        console.log(storeItem?.name)
         return {
           price_data: {
             currency: "usd",
@@ -62,8 +63,7 @@ app.post("/create-checkout-session/:userId", async (req, res, next) => {
       }),
       success_url: `${process.env.SUCCESS_PAGE_URL}?transaction=success&token=${token}`,
       cancel_url: `${process.env.CANCEL_PAGE_URL}?transaction=cancelled`,
-      metadata: { _id: userId},
-      
+      metadata: { _id: userId },
     });
     res.json({ url: session.url, token });
   } catch (error) {
@@ -71,54 +71,61 @@ app.post("/create-checkout-session/:userId", async (req, res, next) => {
   }
 });
 
-app.post('/webhook', bodyParser.raw({ type: 'application/json' }), async (request: Request, response: Response) => {
-  const sig: any = request.headers['stripe-signature'];
+app.post(
+  "/webhook",
+  bodyParser.raw({ type: "application/json" }),
+  async (request: Request, response: Response) => {
+    const sig: any = request.headers["stripe-signature"];
 
-  let event: Stripe.Event;
+    let event: Stripe.Event;
 
-  try {
-    event = stripe.webhooks.constructEvent(request.body, sig, process.env.STRIPE_WH_SECRET!);
-  } catch (err: any) {
-    console.error(`Webhook signature verification failed.`, err.message);
-    response.status(400).send(`Webhook Error: ${err.message}`);
-    return;
-  }
+    try {
+      event = stripe.webhooks.constructEvent(
+        request.body,
+        sig,
+        process.env.STRIPE_WH_SECRET!
+      );
+    } catch (err: any) {
+      console.error(`Webhook signature verification failed.`, err.message);
+      response.status(400).send(`Webhook Error: ${err.message}`);
+      return;
+    }
 
-  // Handle the event
-  console.log(event.type)
-  switch (event.type) {
-    case "checkout.session.completed":
-      const session = event.data.object as Stripe.Checkout.Session;
+    // Handle the event
+    console.log(event.type);
+    switch (event.type) {
+      case "checkout.session.completed":
+        const session = event.data.object as Stripe.Checkout.Session;
 
-      // Fulfill the purchase...
-      const userId = session.metadata?._id; // Make sure to pass the user ID during checkout session creation
-      console.log(userId)
-      if (userId) {
-        const user = await UserModel.findById(userId);
+        // Fulfill the purchase...
+        const userId = session.metadata?._id; // Make sure to pass the user ID during checkout session creation
+        console.log(userId);
+        if (userId) {
+          const user = await UserModel.findById(userId);
 
-        if (user) {
-          user.tier = 1;
-          await user.save();
-          console.log(`User ${user.username} upgraded to premium tier.`);
-        } else {
-          console.error(`User with email ${userId} not found.`);
+          if (user) {
+            user.tier = 1;
+            await user.save();
+            console.log(`User ${user.username} upgraded to premium tier.`);
+          } else {
+            console.error(`User with email ${userId} not found.`);
+          }
         }
-      }
-      break;
-    // Add more event types to handle here as needed
-    default:
-      console.log(`Unhandled event type ${event.type}`);
+        break;
+      // Add more event types to handle here as needed
+      default:
+        console.log(`Unhandled event type ${event.type}`);
+    }
+
+    // Return a 200 response to acknowledge receipt of the event
+    response.send();
   }
-
-  // Return a 200 response to acknowledge receipt of the event
-  response.send();
-});
-
+);
 
 //  ROUTES
 app.use("/api/users/", userRoutes);
 app.use("/api/courses/", courseRoutes);
-app.use("/api/premium/", premiumTierRoutes);
+app.use("/api/tier/", tierRoutes);
 
 //  ERROR HANDLING
 app.use((req, res, next) => {

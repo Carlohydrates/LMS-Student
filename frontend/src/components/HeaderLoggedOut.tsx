@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 const HeaderLoggedOut = () => {
   const navigate = useNavigate();
   return (
-    <div className="flex sticky top-0 h-16 w-full bg-black_olive py-4 px-4 justify-between text-snow">
+    <div className="flex sticky top-0 h-16 w-full bg-black_olive py-4 px-4 justify-between">
       <img
         src="/LMS-LOGO.png"
         alt="LMS logo"
@@ -21,7 +21,7 @@ const HeaderLoggedOut = () => {
         </button>
         <Button
           data-testid="signup-page"
-          className="flex bg-verdigris-500 poppins-semibold py-0"
+          className="flex bg-verdigris-500 poppins-semibold py-0 text-black_olive"
           onClick={() => navigate("/signup")}
         >
           Sign Up

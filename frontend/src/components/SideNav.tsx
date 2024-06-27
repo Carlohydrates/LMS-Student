@@ -140,8 +140,8 @@ const SideNav = () => {
               `}
       >
         <img
-          src={`https://ui-avatars.com/api/?background=62bbc1&color=000000&bold=true&name=${user.username}`}
-          alt=""
+          src={`https://ui-avatars.com/api/?background=82c8cd&color=30332e&bold=true&name=${user.username}`}
+          alt="ui_avatar"
           className="w-10 h-10 rounded-md"
         />
         <div
@@ -153,8 +153,8 @@ const SideNav = () => {
               `}
         >
           <div className="leading-4">
-            <h4 className="font-semibold text-snow-600">{user.username}</h4>
-            <span className="poppins-light-italic text-xs text-snow-600">
+            <h4 className="font-semibold text-snow">{user.username}</h4>
+            <span className="poppins-light-italic text-xs text-snow">
               {user.email}
             </span>
           </div>

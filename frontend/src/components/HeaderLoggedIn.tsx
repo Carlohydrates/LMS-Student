@@ -10,6 +10,7 @@ const HeaderLoggedIn = () => {
   const handleLogout = () => {
     logout();
   };
+
   return (
     <div className="flex sticky top-0 h-14 bg-black_olive border-b py-4 px-4 justify-between text-snow z-10">
       <div

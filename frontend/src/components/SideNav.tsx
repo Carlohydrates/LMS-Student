@@ -105,6 +105,7 @@ const SideNav = () => {
           id={2}
           active={activeListItem === 2}
           setActiveListItem={setActiveListItem}
+          data-testid="available-courses"
         />
         <SideNavItem
           icon={<BookUser size={25} />}
@@ -113,6 +114,7 @@ const SideNav = () => {
           id={3}
           active={activeListItem === 3}
           setActiveListItem={setActiveListItem}
+          data-testid="on-going-courses"
           // alert
         />
         <SideNavItem
@@ -130,6 +132,7 @@ const SideNav = () => {
           id={5}
           active={activeListItem === 5}
           setActiveListItem={setActiveListItem}
+          data-testid="subscription-plan"
         />
       </ul>
 
@@ -169,6 +172,7 @@ const SideNav = () => {
             <Dropdown.Item
               className="text-red-600 gap-2 items-end flex overflow-hidden"
               onClick={() => setOpenConfirmModal(true)}
+              data-testid="delete-account"
             >
               <UserRoundX />
               Delete Account

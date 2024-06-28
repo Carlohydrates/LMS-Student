@@ -65,7 +65,7 @@ const CourseCard: React.FC<CourseCardProps> = ({
 
         {userTier! >= tier ? (
           <Button
-            className="flex size-fit mx-auto mt-4 bg-black_olive text-snow"
+            className="flex size-fit mx-auto mt-4 bg-snow text-black_olive"
             onClick={() => {
               enrollUser(code, user.username);
               triggerRefresh();

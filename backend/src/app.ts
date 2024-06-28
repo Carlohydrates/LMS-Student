@@ -49,9 +49,9 @@ app.post("/create-checkout-session/:userId", async (req, res, next) => {
       payment_method_types: ["card"],
       mode: "payment",
       line_items: req.body.items.map((item: any) => {
-        console.log(item.id)
+        // console.log(item.id)
         const storeItem = storeItems.get(item.id);
-        console.log(storeItem?.name)
+        // console.log(storeItem?.name)
         return {
           price_data: {
             currency: "usd",
@@ -63,7 +63,7 @@ app.post("/create-checkout-session/:userId", async (req, res, next) => {
       }),
       success_url: `${process.env.SUCCESS_PAGE_URL}?transaction=success&token=${token}`,
       cancel_url: `${process.env.CANCEL_PAGE_URL}?transaction=cancelled`,
-      metadata: { _id: userId },
+      metadata: { _id: userId, tier: req.body.items[0].id },
     });
     res.json({ url: session.url, token });
   } catch (error) {
@@ -99,16 +99,17 @@ app.post(
 
         // Fulfill the purchase...
         const userId = session.metadata?._id; // Make sure to pass the user ID during checkout session creation
+        const newTier = session.metadata?.tier;
         console.log(userId);
         if (userId) {
           const user = await UserModel.findById(userId);
 
           if (user) {
-            user.tier = 1;
+            user.tier = parseInt(newTier!);
             await user.save();
-            console.log(`User ${user.username} upgraded to premium tier.`);
+            console.log(`User ${user.username} upgraded to tier`, newTier);
           } else {
-            console.error(`User with email ${userId} not found.`);
+            console.error(`User with id ${userId} not found.`);
           }
         }
         break;

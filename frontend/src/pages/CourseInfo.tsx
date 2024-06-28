@@ -40,16 +40,16 @@ const CourseInfo = () => {
     <div className="flex flex-row w-full">
       <NavContext.Provider value={"my courses"}>
         <SideNav />
-        <div className="flex flex-col lg:w-screen lg:h-screen overflow-y-auto bg-black_olive-600">
+        <div className="flex flex-col lg:w-screen lg:h-screen overflow-y-auto bg-black_olive">
           <HeaderLoggedIn />
 
           {course && (
             <>
-              <div className="flex flex-col bg-snow lg:w-11/12 mx-auto min-h-fit p-4 pb-12 rounded-lg my-10 poppins-regular gap-4">
-                <h1 className="poppins-extrabold lg:text-4xl text-verdigris">
+              <div className="flex flex-col bg-verdigris lg:w-11/12 mx-auto min-h-fit p-4 pb-12 rounded-lg my-10 poppins-regular gap-4">
+                <h1 className="poppins-extrabold lg:text-4xl text-snow">
                   {course.code}
                 </h1>
-                <h2 className="poppins-semibold lg:text-2xl text-verdigris">
+                <h2 className="poppins-semibold lg:text-2xl text-snow">
                   {course.title}
                 </h2>
                 <h3 className="poppins-semibold-italic lg:text-sm text-black_olive">

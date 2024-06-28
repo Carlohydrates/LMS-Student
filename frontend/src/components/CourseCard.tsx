@@ -70,6 +70,7 @@ const CourseCard: React.FC<CourseCardProps> = ({
               enrollUser(code, user.username);
               triggerRefresh();
             }}
+            data-testid={`enroll-course-${code}`}
           >
             Enroll Course
           </Button>

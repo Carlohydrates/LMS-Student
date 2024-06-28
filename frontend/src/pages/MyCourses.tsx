@@ -61,6 +61,7 @@ const MyCourses = () => {
                         <Button
                           className="bg-snow text-black_olive"
                           onClick={() => navigate(`/courses/${course.code}`)}
+                          data-testid={`course-${course._id}`}
                         >
                           View Course
                         </Button>

@@ -18,7 +18,6 @@ import ProtectedRoutes from "./layouts/ProtectedRoutes";
 import PublicRoutes from "./layouts/PublicRoutes";
 import Pricing from "./pages/Pricing";
 import MyCourses from "./pages/MyCourses";
-import { NavContext } from "./context/NavContext";
 
 const router = createBrowserRouter([
   {

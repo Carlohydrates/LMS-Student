@@ -12,7 +12,7 @@ interface ModalProps {
 const PremiumCheckout: React.FC<ModalProps> = ({ visible, setVisible }) => {
   const { user } = useAuthContext();
   const { upgradePremium } = useUpgradePremium();
-  const { price: premiumPrice } = useGetPrice(1);
+  const { price: premiumPrice } = useGetPrice(2);
   return (
     <Modal
       show={visible}

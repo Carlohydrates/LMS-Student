@@ -55,7 +55,7 @@ const Pricing = () => {
             Pricing
           </div>
           <div className="flex flex-row justify-center gap-4 p-4">
-            <Card className="relative flex flex-col w-[28rem] h-[30rem] text-center justify-center items-center bg-verdigris-900 hover:shadow-black hover:shadow-lg transition-all ease-in-out hover:-translate-y-2 duration-200 delay-150">
+            <Card className="relative flex flex-col w-[28rem] h-[34rem] text-center justify-center items-center bg-gradient-to-r from-verdigris-900 to-verdigris-800 hover:shadow-black hover:shadow-lg transition-all ease-in-out hover:-translate-y-2 duration-200 delay-150">
               {userTier === 0 ? (
                 <Alert
                   color={"warning"}
@@ -82,7 +82,7 @@ const Pricing = () => {
               </div>
               <div className="flex w-full h-full justify-center"></div>
             </Card>
-            <Card className="relative flex flex-col w-[28rem] h-[30rem] text-center justify-center items-center bg-verdigris-900 hover:shadow-black hover:shadow-lg transition-all ease-in-out hover:-translate-y-2 duration-200 delay-150">
+            <Card className="relative flex flex-col w-[28rem] h-[34rem] text-center justify-center items-center bg-gradient-to-r from-verdigris-800 to-verdigris-700 hover:shadow-black hover:shadow-lg transition-all ease-in-out hover:-translate-y-2 duration-200 delay-150">
               {userTier === 1 ? (
                 <Alert
                   color={"warning"}
@@ -114,7 +114,7 @@ const Pricing = () => {
               <div className="flex w-full h-full justify-center">
                 {userTier! < 1 ? (
                   <Button
-                    outline
+                    color={"secondary"}
                     className="size-fit self-start poppins-semibold"
                     onClick={() => setBasicCheckout(true)}
                   >
@@ -125,7 +125,7 @@ const Pricing = () => {
                 )}
               </div>
             </Card>
-            <Card className="relative flex flex-col w-[28rem] h-[30rem] text-center justify-center items-center bg-verdigris-900 hover:shadow-black hover:shadow-lg transition-all ease-in-out hover:-translate-y-2 duration-200 delay-150">
+            <Card className="relative flex flex-col w-[28rem] h-[34rem] text-center justify-center items-center bg-gradient-to-r from-verdigris-700 to-verdigris-600 hover:shadow-black hover:shadow-lg transition-all ease-in-out hover:-translate-y-2 duration-200 delay-150">
               {userTier === 2 ? (
                 <Alert
                   color={"warning"}
@@ -161,7 +161,7 @@ const Pricing = () => {
               <div className="flex w-full h-full justify-center">
                 {userTier! < 2 ? (
                   <Button
-                    outline
+                    color={"secondary"}
                     className="size-fit self-start poppins-semibold"
                     onClick={() => setPremiumCheckout(true)}
                   >

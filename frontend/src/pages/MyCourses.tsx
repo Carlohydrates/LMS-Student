@@ -23,7 +23,7 @@ const MyCourses = () => {
               <div className="flex mx-auto p-8 text-2xl text-snow poppins-semibold">
                 Enrolled Courses
               </div>
-              <div className="flex flex-row flex-wrap gap-12 lg:w-full lg:h-full justify-center">
+              <div className="flex flex-row flex-wrap gap-4 lg:w-full lg:h-full justify-center">
                 {courses
                   .filter(
                     (course) =>
@@ -32,7 +32,7 @@ const MyCourses = () => {
                   .map((course) => (
                     <div
                       key={course._id}
-                      className="bg-verdigris rounded-xl lg:w-[26rem] lg:h-80 text-snow poppins-regular p-7 hover:shadow-black hover:shadow-lg transition-all ease-in-out hover:-translate-y-2 duration-200 delay-150"
+                      className="bg-verdigris rounded-xl lg:w-[26rem] lg:h-80 text-snow poppins-regular p-7 hover:shadow-black hover:shadow-lg hover:cursor-pointer transition-all ease-in-out hover:-translate-y-2 duration-200 delay-150"
                     >
                       <h1 className="w-full h-10 poppins-extrabold justify-between">
                         <div className="flex justify-between items-start lg:text-3xl">
@@ -59,7 +59,7 @@ const MyCourses = () => {
                       </div>
                       <div className="inline-flex py-4 w-full justify-evenly">
                         <Button
-                          className="bg-snow text-black_olive"
+                          color={"secondary"}
                           onClick={() => navigate(`/courses/${course.code}`)}
                           data-testid={`course-${course._id}`}
                         >

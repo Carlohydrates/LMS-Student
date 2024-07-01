@@ -23,7 +23,8 @@ const HeaderLoggedIn = () => {
         <Button
           data-testid="logout-button"
           onClick={handleLogout}
-          className="bg-verdigris poppins-semibold py-0"
+          className="poppins-semibold py-0"
+          color={"primary"}
         >
           SIGN OUT
         </Button>

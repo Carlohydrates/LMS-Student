@@ -143,7 +143,7 @@ const SideNav = () => {
               `}
       >
         <img
-          src={`https://ui-avatars.com/api/?background=82c8cd&color=30332e&bold=true&name=${user.username}`}
+          src={`https://ui-avatars.com/api/?background=fffbfc&color=30332e&bold=true&name=${user.username}`}
           alt="ui_avatar"
           className="w-10 h-10 rounded-md"
         />

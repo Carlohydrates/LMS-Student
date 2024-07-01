@@ -21,7 +21,7 @@ const Courses = () => {
               <div className="flex mx-auto p-8 text-2xl text-snow poppins-semibold">
                 All Courses
               </div>
-              <div className="flex flex-row flex-wrap gap-12 lg:w-full lg:h-full justify-center">
+              <div className="flex flex-row flex-wrap gap-4 lg:w-full lg:h-full justify-center">
                 {courses
                   .filter(
                     (course) =>

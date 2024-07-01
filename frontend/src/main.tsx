@@ -13,11 +13,13 @@ import { AuthContextProvider } from "./context/AuthContext";
 import SignUp from "./pages/SignUp";
 import Landing from "./pages/Landing";
 import { ToastContainer, Slide } from "react-toastify";
-import 'react-toastify/dist/ReactToastify.css';
+import "react-toastify/dist/ReactToastify.css";
 import ProtectedRoutes from "./layouts/ProtectedRoutes";
 import PublicRoutes from "./layouts/PublicRoutes";
 import Pricing from "./pages/Pricing";
 import MyCourses from "./pages/MyCourses";
+import { Flowbite } from "flowbite-react";
+import { customTheme } from "./themes/customTheme";
 
 const router = createBrowserRouter([
   {
@@ -44,27 +46,30 @@ const router = createBrowserRouter([
   { path: "*", element: <NotFoundPage /> },
 ]);
 
-const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement);
+const root = ReactDOM.createRoot(
+  document.getElementById("root") as HTMLElement
+);
 root.render(
   <AuthContextProvider>
     <GoogleOAuthProvider clientId={import.meta.env.VITE_CLIENT_ID}>
       <React.StrictMode>
-        <ToastContainer
-          position="top-center"
-          autoClose={2000}
-          hideProgressBar
-          newestOnTop={true}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-          theme="colored"
-          transition={Slide}
-        />
-        <RouterProvider router={router} />
+        <Flowbite theme={{ theme: customTheme }}>
+          <ToastContainer
+            position="top-center"
+            autoClose={2000}
+            hideProgressBar
+            newestOnTop={true}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="colored"
+            transition={Slide}
+          />
+          <RouterProvider router={router} />
+        </Flowbite>
       </React.StrictMode>
     </GoogleOAuthProvider>
   </AuthContextProvider>
 );
-

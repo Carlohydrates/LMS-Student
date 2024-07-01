@@ -28,11 +28,11 @@ const SideNavItem: React.FC<Props> = ({
           className={`
           relative flex items-center py-3 px-3 my-3 lg:max-h-12
           font-medium rounded-md cursor-pointer
-          transition-colors group
+           group
           ${
             active
-              ? "bg-verdigris text-snow transition-all"
-              : "hover:bg-verdigris-900 hover:text-black_olive-500 text-snow-500 "
+              ? "bg-snow text-black_olive transition-all"
+              : "hover:bg-snow hover:text-black_olive-500 text-snow-500 "
           }
       `}
         >
@@ -56,7 +56,7 @@ const SideNavItem: React.FC<Props> = ({
             <div
               className={`
             absolute left-full rounded-md px-2 py-1 ml-2 text-nowrap
-            bg-verdigris-900 text-black_olive text-sm
+            bg-snow text-black_olive text-sm
             invisible opacity-20 -translate-x-3 transition-all
             group-hover:visible group-hover:opacity-90 group-hover:translate-x-0
         `}

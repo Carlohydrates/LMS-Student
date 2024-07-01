@@ -7,7 +7,9 @@ export default {
       backgroundImage: {
         "login-bg": "url('/LOGIN_BG.png')",
       },
-      colors: {
+      colors:
+       {
+        'active-tab-border': 'transparent',
         black: {
           DEFAULT: "#010400",
           100: "#000100",
@@ -45,7 +47,7 @@ export default {
           900: "#fffefe",
         },
         verdigris: {
-          DEFAULT: "#82c8cd",
+          DEFAULT: "#a1d6d9",
           100: "#11282a",
           200: "#215053",
           300: "#32787d",

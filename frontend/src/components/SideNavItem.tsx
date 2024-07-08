@@ -32,7 +32,7 @@ const SideNavItem: React.FC<Props> = ({
           ${
             active
               ? "bg-snow text-black_olive transition-all"
-              : "hover:bg-snow hover:text-black_olive-500 text-snow-500 "
+              : "hover:bg-verdigris hover:text-black_olive-500 text-snow-500 transition-colors"
           }
       `}
         >

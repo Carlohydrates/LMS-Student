@@ -4,14 +4,18 @@ import HeaderLoggedIn from "../components/HeaderLoggedIn";
 import { useGetCourses } from "../hooks/course/useGetCourses";
 import { useAuthContext } from "../hooks/useAuthContext";
 import { Badge, Button, Spinner } from "flowbite-react";
-import { useUnenrollUser } from "../hooks/user/useUnenrollUser";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 const MyCourses = () => {
   const { user } = useAuthContext();
-  const { courses } = useGetCourses();
-  const { unenrollUser } = useUnenrollUser();
+  const { courses, getCourses } = useGetCourses();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    getCourses();
+  }, []);
+
   return (
     <main className="flex flex-row">
       <NavContext.Provider value={"my courses"}>
@@ -64,14 +68,6 @@ const MyCourses = () => {
                           data-testid={`course-${course._id}`}
                         >
                           View Course
-                        </Button>
-                        <Button
-                          className="bg-black_olive"
-                          onClick={() =>
-                            unenrollUser(course.code, user.username)
-                          }
-                        >
-                          Unenroll Course
                         </Button>
                       </div>
                     </div>

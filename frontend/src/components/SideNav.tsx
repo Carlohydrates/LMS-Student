@@ -1,20 +1,21 @@
-import { useContext, useEffect, useState } from "react";
+import { Alert, Button, Dropdown, Modal } from "flowbite-react";
 import {
+  BookOpenText,
   BookUser,
   Gem,
+  LayoutDashboard,
   MoreVertical,
   PanelLeftClose,
   PanelLeftOpen,
   TriangleAlert,
   UserRoundX,
 } from "lucide-react";
-import SideNavItem from "./SideNavItem";
-import { BarChart3, LayoutDashboard, BookOpenText } from "lucide-react";
+import { useContext, useEffect, useState } from "react";
 import { NavContext } from "../context/NavContext";
 import { useAuthContext } from "../hooks/useAuthContext";
-import { Alert, Button, Dropdown, Modal } from "flowbite-react";
-import { useDeleteUser } from "../hooks/user/useDeleteUser";
 import { useLogout } from "../hooks/useLogout";
+import { useDeleteUser } from "../hooks/user/useDeleteUser";
+import SideNavItem from "./SideNavItem";
 
 const SideNav = () => {
   let activeItemId: number = 0;
@@ -33,12 +34,8 @@ const SideNav = () => {
       activeItemId = 3;
       break;
     }
-    case "grades": {
-      activeItemId = 4;
-      break;
-    }
     case "pricing": {
-      activeItemId = 5;
+      activeItemId = 4;
       break;
     }
     default: {
@@ -118,19 +115,11 @@ const SideNav = () => {
           // alert
         />
         <SideNavItem
-          icon={<BarChart3 size={25} />}
-          text="Grades"
-          expanded={expanded}
-          id={4}
-          active={activeListItem === 4}
-          setActiveListItem={setActiveListItem}
-        />
-        <SideNavItem
           icon={<Gem size={25} />}
           text="Pricing"
           expanded={expanded}
-          id={5}
-          active={activeListItem === 5}
+          id={4}
+          active={activeListItem === 4}
           setActiveListItem={setActiveListItem}
           data-testid="subscription-plan"
         />

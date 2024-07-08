@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import CourseCard from "../components/CourseCard";
 import HeaderLoggedIn from "../components/HeaderLoggedIn";
 import SideNav from "../components/SideNav";
@@ -7,7 +8,11 @@ import { useAuthContext } from "../hooks/useAuthContext";
 
 const Courses = () => {
   const { user } = useAuthContext();
-  const { courses } = useGetCourses();
+  const { courses, getCourses } = useGetCourses();
+
+  useEffect(() => {
+    getCourses();
+  }, []);
 
   return (
     <main className="flex flex-row w-full">

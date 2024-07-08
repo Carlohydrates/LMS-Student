@@ -29,11 +29,15 @@ const SignUpForm = () => {
   };
 
   return (
-    <div className="flex lg:w-1/3 lg:h-3/4 shadow-lg shadow-black bg-snow rounded-xl my-auto mx-auto">
+    <div className="flex size-fit py-8 px-16 shadow-lg shadow-black bg-snow rounded-xl my-auto mx-auto">
       <div className="flex mx-auto my-auto">
         <div className="flex flex-col mx-auto my-auto w-full sm:w-80 justify-center">
-          <div className="flex w-full justify-center mb-14 poppins-extrabold text-4xl">
-            Student Sign Up
+          <div className="flex w-full justify-center p-4">
+            <img
+              src="/LMS-LOGO.png"
+              alt="LMS logo"
+              className="flex w-full h-20 hover:cursor-pointer"
+            />
           </div>
           <form
             className="flex lg:w-full flex-col gap-4"
@@ -84,7 +88,11 @@ const SignUpForm = () => {
               >
                 SIGNUP
               </Button>
-              <p className="poppins-regular text-sm text-center p-2">or</p>
+              <div className="flex items-center p-2">
+                <div className="flex-grow bg-black_olive h-[0.05rem]"></div>
+                <div className="px-2">or</div>
+                <div className="flex-grow bg-black_olive h-[0.05rem]"></div>
+              </div>
               <div className="hover:shadow-inner mx-auto">
                 <div className="w-full">
                   <GoogleLogin

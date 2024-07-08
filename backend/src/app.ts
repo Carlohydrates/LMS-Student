@@ -4,6 +4,7 @@ import morgan from "morgan";
 import courseRoutes from "./routes/courses";
 import userRoutes from "./routes/users";
 import tierRoutes from "./routes/tier";
+import moduleRoutes from "./routes/module"
 import createHttpError, { isHttpError } from "http-errors";
 import cors from "cors";
 import Stripe from "stripe";
@@ -127,6 +128,7 @@ app.post(
 app.use("/api/users/", userRoutes);
 app.use("/api/courses/", courseRoutes);
 app.use("/api/tier/", tierRoutes);
+app.use("/api/module/", moduleRoutes);
 
 //  ERROR HANDLING
 app.use((req, res, next) => {

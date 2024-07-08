@@ -1,12 +1,10 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Course } from "../../models/course";
 
 export const useGetCourses = () => {
   const [courses, setCourses] = useState<Course[]>([]);
   const [error, setError] = useState<string | null>(null);
-  const [refresh, setRefresh] = useState(false);
 
-  useEffect(() => {
     const getCourses = async () => {
       try {
         const response = await fetch(`${import.meta.env.VITE_COURSE_API}/`, {
@@ -29,10 +27,5 @@ export const useGetCourses = () => {
       }
     };
 
-    getCourses();
-  }, [refresh]);
-
-  const triggerRefresh = () => setRefresh((prev) => !prev);
-
-  return { courses, error, triggerRefresh };
+  return { courses, error, getCourses };
 };

@@ -1,7 +1,7 @@
-import { Undo2, Bell } from "lucide-react";
+import { Button } from "flowbite-react";
+import { Undo2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useLogout } from "../hooks/useLogout";
-import { Button } from "flowbite-react";
 
 const HeaderLoggedIn = () => {
   const navigate = useNavigate();

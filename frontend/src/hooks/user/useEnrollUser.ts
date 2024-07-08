@@ -1,8 +1,6 @@
 import { toast } from "react-toastify";
-import { useGetCourses } from "../course/useGetCourses";
 
 export const useEnrollUser = () => {
-  const { triggerRefresh } = useGetCourses();
   const enrollUser = async (courseCode: string, username: string) => {
     try {
       const res = await fetch(
@@ -17,7 +15,6 @@ export const useEnrollUser = () => {
       );
       if (res.ok) {
         toast.success("User enrolled successfully.");
-        triggerRefresh();
       }
       if (!res.ok) {
         toast.error("Error enrolling course.");

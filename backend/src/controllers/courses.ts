@@ -210,7 +210,7 @@ export const getEnrollees: RequestHandler = async (req, res, next) => {
     const course = await CourseModel.findOne({ code: courseId }).exec();
 
     if (!course) {
-      throw createHttpError(404, "Course not found");
+      throw createHttpError(404, "No enrollees found.");
     }
 
     const { enrolled } = await course.populate("enrolled");

@@ -11,6 +11,8 @@ import { NavContext } from "../context/NavContext";
 import { useGetPrice } from "../hooks/tier/useGetPrice";
 import { useAuthContext } from "../hooks/useAuthContext";
 import { useGetUserTier } from "../hooks/user/useGetUserTier";
+import Loading from "../components/Loading";
+import { toast } from "react-toastify";
 
 const Pricing = () => {
   const { price: basicPrice } = useGetPrice(1);
@@ -20,7 +22,8 @@ const Pricing = () => {
   const [successModal, setSuccessModal] = useState(false);
   const { user } = useAuthContext();
   const navigate = useNavigate();
-  const { tier: userTier } = useGetUserTier(user._id);
+  const { tier: userTier, loading, error } = useGetUserTier(user._id);
+
   useEffect(() => {
     const queryParams = new URLSearchParams(location.search);
     const transactionStatus = queryParams.get("transaction");
@@ -36,6 +39,14 @@ const Pricing = () => {
       navigate(location.pathname, { replace: true });
     }
   }, [location, navigate]);
+
+  if (loading) {
+    return <Loading />;
+  }
+
+  if (error) {
+    toast.error(error);
+  }
 
   return (
     <main

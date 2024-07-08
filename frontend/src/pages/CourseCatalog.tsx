@@ -1,18 +1,25 @@
-import { useEffect } from "react";
+import { toast } from "react-toastify";
 import CourseCard from "../components/CourseCard";
 import HeaderLoggedIn from "../components/HeaderLoggedIn";
+import Loading from "../components/Loading";
 import SideNav from "../components/SideNav";
 import { NavContext } from "../context/NavContext";
 import { useGetCourses } from "../hooks/course/useGetCourses";
 import { useAuthContext } from "../hooks/useAuthContext";
+import { useGetUserTier } from "../hooks/user/useGetUserTier";
 
 const Courses = () => {
   const { user } = useAuthContext();
-  const { courses, getCourses } = useGetCourses();
+  const { courses } = useGetCourses();
+  const { tier: userTier, loading, error } = useGetUserTier(user._id);
 
-  useEffect(() => {
-    getCourses();
-  }, []);
+  if (loading) {
+    return <Loading />;
+  }
+
+  if (error) {
+    toast.error(error);
+  }
 
   return (
     <main className="flex flex-row w-full">
@@ -35,6 +42,7 @@ const Courses = () => {
                   .map((course) => (
                     <CourseCard
                       key={course._id}
+                      userTier={userTier!}
                       code={course.code}
                       title={course.title}
                       description={course.description}

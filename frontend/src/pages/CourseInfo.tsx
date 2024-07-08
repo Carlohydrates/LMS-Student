@@ -1,35 +1,50 @@
 import { Button, Table, Tabs } from "flowbite-react";
-import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 import HeaderLoggedIn from "../components/HeaderLoggedIn";
+import Loading from "../components/Loading";
 import SideNav from "../components/SideNav";
 import { NavContext } from "../context/NavContext";
 import { useGetCourse } from "../hooks/course/useGetCourse";
 import { useGetEnrollees } from "../hooks/course/useGetEnrollees";
 import { useAuthContext } from "../hooks/useAuthContext";
-import { NotFoundPage } from "./NotFoundPage";
 import { useUnenrollUser } from "../hooks/user/useUnenrollUser";
 import CourseModules from "./CourseModules";
+import { NotFoundPage } from "./NotFoundPage";
 
 const CourseInfo = () => {
   const params = useParams();
   const { id: courseCode } = params;
-  const { course, getCourse } = useGetCourse();
-  const { enrollees, getEnrollees } = useGetEnrollees();
+  const {
+    course,
+    loading: loadingCourses,
+    error: coursesError,
+  } = useGetCourse(courseCode!);
+  const {
+    enrollees,
+    loading: loadingEnrollees,
+    error: enrolleesError,
+  } = useGetEnrollees(courseCode!);
   const { user } = useAuthContext();
   const { unenrollUser } = useUnenrollUser();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (courseCode) {
-      getCourse(courseCode);
-      getEnrollees(courseCode);
-    }
-  }, [courseCode]);
+  if (loadingCourses || loadingEnrollees) {
+    return <Loading />;
+  }
+  
+  if (coursesError) {
+    toast.error(coursesError);
+  }
+  if (enrolleesError) {
+    toast.error(enrolleesError);
+  }
+  
+  if (!course) {
+    return <NotFoundPage />;
+  } 
 
-  if (!course) return <NotFoundPage />;
-
-  if (enrollees) {
+  if (enrollees && course) {
     // Check if the course is published and the user is enrolled
     const userEnrolled = enrollees.some(
       (enrollee) => enrollee._id === user._id
@@ -48,19 +63,16 @@ const CourseInfo = () => {
 
           {course && (
             <>
-              <div className="flex flex-col border-solid border-2 border-verdigris lg:w-11/12 mx-auto min-h-fit p-4 pb-12 rounded-lg my-10 poppins-regular gap-4">
-                <Tabs
-                  style="underline"
-                  className="bg-none rounded-xl border-b-0"
-                >
+              <div className="flex flex-col lg:w-11/12 mx-auto min-h-fit p-4 pb-12 rounded-lg my-10 poppins-regular gap-4">
+                <Tabs style="underline">
                   <Tabs.Item title="Overview">
                     <h1 className="poppins-extrabold lg:text-4xl text-snow">
                       {course.code}
                       <Button
                         className="my-2 flex float-end"
                         color={"primary"}
-                        onClick={() => {
-                          unenrollUser(course.code, user.username);
+                        onClick={async () => {
+                          await unenrollUser(course.code, user.username);
                           navigate("/mycourses");
                         }}
                       >

@@ -1,20 +1,14 @@
-import { Alert, Button, Dropdown, Modal } from "flowbite-react";
 import {
   BookOpenText,
   BookUser,
   Gem,
   LayoutDashboard,
-  MoreVertical,
   PanelLeftClose,
   PanelLeftOpen,
-  TriangleAlert,
-  UserRoundX,
 } from "lucide-react";
 import { useContext, useEffect, useState } from "react";
 import { NavContext } from "../context/NavContext";
 import { useAuthContext } from "../hooks/useAuthContext";
-import { useLogout } from "../hooks/useLogout";
-import { useDeleteUser } from "../hooks/user/useDeleteUser";
 import SideNavItem from "./SideNavItem";
 
 const SideNav = () => {
@@ -56,10 +50,6 @@ const SideNav = () => {
   useEffect(() => {
     localStorage.setItem("sideNavExpanded", JSON.stringify(expanded));
   }, [expanded]);
-
-  const { deleteUser } = useDeleteUser();
-  const { logout } = useLogout();
-  const [openConfirmModal, setOpenConfirmModal] = useState(false);
 
   return (
     <nav
@@ -150,61 +140,8 @@ const SideNav = () => {
               {user.email}
             </span>
           </div>
-          <Dropdown
-            label="dropdown"
-            placement="top"
-            dismissOnClick={false}
-            renderTrigger={() => (
-              <MoreVertical size={20} className="hover:cursor-pointer mx-2" />
-            )}
-          >
-            <Dropdown.Item
-              className="text-red-600 gap-2 items-end flex overflow-hidden"
-              onClick={() => setOpenConfirmModal(true)}
-              data-testid="delete-account"
-            >
-              <UserRoundX />
-              Delete Account
-            </Dropdown.Item>
-          </Dropdown>
         </div>
       </div>
-      <Modal
-        show={openConfirmModal}
-        size="sm"
-        onClose={() => setOpenConfirmModal(false)}
-      >
-        <Modal.Body>
-          <div className="flex flex-col justify-center text-center items-center gap-10 p-2 poppins-semibold lg:text-2xl text-red-600">
-            <Alert
-              color="failure"
-              icon={TriangleAlert}
-              className="poppins-extrabold"
-            >
-              WARNING: You are about to delete your account.
-            </Alert>
-            <div className="flex flex-row gap-4 lg:text-lg">
-              <Button
-                data-testid="proceed"
-                color="failure"
-                onClick={() => {
-                  deleteUser(user._id);
-                  logout();
-                  setOpenConfirmModal(false);
-                }}
-              >
-                Proceed
-              </Button>
-              <Button
-                data-testid="cancel"
-                onClick={() => setOpenConfirmModal(false)}
-              >
-                Cancel
-              </Button>
-            </div>
-          </div>
-        </Modal.Body>
-      </Modal>
     </nav>
   );
 };

@@ -1,24 +1,23 @@
+import { GoogleOAuthProvider } from "@react-oauth/google";
+import { Flowbite } from "flowbite-react";
 import React from "react";
 import ReactDOM from "react-dom/client";
-import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { GoogleOAuthProvider } from "@react-oauth/google";
-import Dashboard from "./pages/Dashboard";
-import Courses from "./pages/CourseCatalog";
-import { NotFoundPage } from "./pages/NotFoundPage";
-import CourseInfo from "./pages/CourseInfo";
-import Grades from "./pages/Grades";
-import Login from "./pages/Login";
-import { AuthContextProvider } from "./context/AuthContext";
-import SignUp from "./pages/SignUp";
-import Landing from "./pages/Landing";
-import { ToastContainer, Slide } from "react-toastify";
+import { Slide, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { AuthContextProvider } from "./context/AuthContext";
+import "./index.css";
 import ProtectedRoutes from "./layouts/ProtectedRoutes";
 import PublicRoutes from "./layouts/PublicRoutes";
-import Pricing from "./pages/Pricing";
+import Courses from "./pages/CourseCatalog";
+import CourseInfo from "./pages/CourseInfo";
+import Dashboard from "./pages/Dashboard";
+import Landing from "./pages/Landing";
+import Login from "./pages/Login";
 import MyCourses from "./pages/MyCourses";
-import { Flowbite } from "flowbite-react";
+import { NotFoundPage } from "./pages/NotFoundPage";
+import Pricing from "./pages/Pricing";
+import SignUp from "./pages/SignUp";
 import { customTheme } from "./themes/customTheme";
 
 const router = createBrowserRouter([

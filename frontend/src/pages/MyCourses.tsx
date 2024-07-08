@@ -1,20 +1,25 @@
+import { Badge, Button } from "flowbite-react";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import HeaderLoggedIn from "../components/HeaderLoggedIn";
+import Loading from "../components/Loading";
 import SideNav from "../components/SideNav";
 import { NavContext } from "../context/NavContext";
-import HeaderLoggedIn from "../components/HeaderLoggedIn";
 import { useGetCourses } from "../hooks/course/useGetCourses";
 import { useAuthContext } from "../hooks/useAuthContext";
-import { Badge, Button, Spinner } from "flowbite-react";
-import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
 
 const MyCourses = () => {
-  const { user } = useAuthContext();
-  const { courses, getCourses } = useGetCourses();
   const navigate = useNavigate();
+  const { user } = useAuthContext();
+  const { courses, loading, error } = useGetCourses();
 
-  useEffect(() => {
-    getCourses();
-  }, []);
+  if (loading) {
+    return <Loading />;
+  }
+
+  if (error) {
+    toast.error(error);
+  }
 
   return (
     <main className="flex flex-row">
@@ -22,6 +27,7 @@ const MyCourses = () => {
         <SideNav />
         <div className="flex flex-col lg:w-screen lg:h-screen overflow-y-auto bg-black_olive pb-20">
           <HeaderLoggedIn />
+
           {courses ? (
             <>
               <div className="flex mx-auto p-8 text-2xl text-snow poppins-semibold">
@@ -36,7 +42,7 @@ const MyCourses = () => {
                   .map((course) => (
                     <div
                       key={course._id}
-                      className="bg-verdigris rounded-xl lg:w-[26rem] lg:h-80 text-snow poppins-regular p-7 hover:shadow-black hover:shadow-lg hover:cursor-pointer transition-all ease-in-out hover:-translate-y-2 duration-200 delay-150"
+                      className="bg-verdigris rounded-xl lg:w-[26rem] lg:h-80 text-black_olive poppins-regular p-7 hover:shadow-black hover:shadow-lg hover:cursor-pointer transition-all ease-in-out hover:-translate-y-2 duration-200 delay-150"
                     >
                       <h1 className="w-full h-10 poppins-extrabold justify-between">
                         <div className="flex justify-between items-start lg:text-3xl">
@@ -75,7 +81,9 @@ const MyCourses = () => {
               </div>
             </>
           ) : (
-            <Spinner size={"xl"}></Spinner>
+            <div className="mx-auto lg:mt-24 text-2xl text-snow poppins-semibold">
+              No Courses Enrolled...
+            </div>
           )}
         </div>
       </NavContext.Provider>

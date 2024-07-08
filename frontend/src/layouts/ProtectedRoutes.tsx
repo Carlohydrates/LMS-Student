@@ -1,13 +1,13 @@
 import React from "react";
 import { Navigate, Outlet } from "react-router-dom";
+import Loading from "../components/Loading";
 import { useAuthContext } from "../hooks/useAuthContext";
-import { Spinner } from "flowbite-react";
 
 const ProtectedRoutes: React.FC = () => {
   const { user, loading } = useAuthContext();
 
   if (loading) {
-    return <Spinner size={"xl"}></Spinner>
+    return <Loading />
   }
 
   return user ? <Outlet /> : <Navigate to="/login" />;

@@ -28,10 +28,6 @@ const HeaderLoggedIn = () => {
         >
           SIGN OUT
         </Button>
-        <Bell
-          size={25}
-          className="hover:scale-110 hover:cursor-pointer hover:animate-none"
-        />
       </div>
     </div>
   );

@@ -21,6 +21,7 @@ const HeaderLoggedOut = () => {
         </button>
         <Button
           data-testid="signup-page"
+          color={"primary"}
           className="flex bg-verdigris-500 poppins-semibold py-0"
           onClick={() => navigate("/signup")}
         >

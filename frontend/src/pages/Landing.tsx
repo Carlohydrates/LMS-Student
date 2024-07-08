@@ -21,9 +21,8 @@ const Landing = () => {
           </p>
           <div className="inline-flex w-full items-baseline">
             <Button
-              outline
-              gradientDuoTone="cyanToBlue"
-              className="flex poppins-semibold w-1/6 mt-6 bg-transparent text-black_olive-200"
+              color={"secondary"}
+              className="flex poppins-semibold w-1/6 mt-6"
               onClick={() => navigate("/login")}
             >
               Get Started
@@ -37,13 +36,14 @@ const Landing = () => {
           </div>
         </div>
         <div
-          className="flex w-2/3 h-1/2 p-10 ml-24 mt-96 poppins-semibold text-snow text-4xl"
+          className="flex w-3/4 h-1/2 p-10 ml-24 mt-96 poppins-semibold text-snow text-4xl"
           id="about"
         >
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ducimus
-          eveniet, ad a maiores debitis commodi, quos ratione veniam ea
-          reprehenderit similique eum dolores facere perferendis quia
-          repudiandae voluptatem ab nulla?
+          Course Dojo is a dynamic online learning management system designed to
+          empower educators in creating and delivering engaging course content
+          to eager learners. Our platform offers a user-friendly interface,
+          allowing instructors to effortlessly organize and share their
+          materials.
         </div>
       </div>
 

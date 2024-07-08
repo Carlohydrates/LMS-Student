@@ -1,12 +1,11 @@
-import { Button, Badge, Spinner } from "flowbite-react";
+import { Badge, Button } from "flowbite-react";
 import React from "react";
-import { useEnrollUser } from "../hooks/user/useEnrollUser";
-import { useAuthContext } from "../hooks/useAuthContext";
-import { useGetCourses } from "../hooks/course/useGetCourses";
 import { useNavigate } from "react-router-dom";
-import { useGetUserTier } from "../hooks/user/useGetUserTier";
+import { useAuthContext } from "../hooks/useAuthContext";
+import { useEnrollUser } from "../hooks/user/useEnrollUser";
 
 interface CourseCardProps {
+  userTier: number;
   code: string;
   title: string;
   description: string;
@@ -18,6 +17,7 @@ interface CourseCardProps {
 }
 
 const CourseCard: React.FC<CourseCardProps> = ({
+  userTier,
   code,
   title,
   description,
@@ -26,15 +26,8 @@ const CourseCard: React.FC<CourseCardProps> = ({
   tier,
 }) => {
   const { enrollUser } = useEnrollUser();
-  const { triggerRefresh } = useGetCourses();
   const { user } = useAuthContext();
   const navigate = useNavigate();
-
-  const { tier: userTier } = useGetUserTier(user._id);
-
-  if (userTier === undefined) {
-    return <Spinner size={"xl"}></Spinner>;
-  }
 
   if (isPublished) {
     return (
@@ -45,9 +38,9 @@ const CourseCard: React.FC<CourseCardProps> = ({
             <Badge
               className="inline-flex size-fit"
               size={"sm"}
-              color={tier === 0 ? "pink" : "indigo"}
+              color={tier === 0 ? "pink" : tier === 1 ? "yellow" : "indigo"}
             >
-              {tier === 0 ? "FREE" : "PREMIUM"}
+              {tier === 0 ? "FREE" : tier === 1 ? "BASIC" : "PREMIUM"}
             </Badge>
           </div>
         </h1>
@@ -69,9 +62,9 @@ const CourseCard: React.FC<CourseCardProps> = ({
           <Button
             className="flex size-fit mx-auto mt-4"
             color={"secondary"}
-            onClick={() => {
-              enrollUser(code, user.username);
-              triggerRefresh();
+            onClick={async () => {
+              await enrollUser(code, user.username);
+              navigate("/mycourses");
             }}
             data-testid={`enroll-course-${code}`}
           >

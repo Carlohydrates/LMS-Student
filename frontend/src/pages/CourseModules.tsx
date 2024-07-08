@@ -1,6 +1,7 @@
 import { Accordion } from "flowbite-react";
-import React, { useEffect } from "react";
+import React from "react";
 import { toast } from "react-toastify";
+import Loading from "../components/Loading";
 import { useGetModules } from "../hooks/module/useGetModules";
 import { Module } from "../models/module";
 
@@ -11,19 +12,10 @@ interface CourseModulesProps {
 const CourseModules: React.FC<CourseModulesProps> = ({ courseCode }) => {
   let moduleCount = 0;
 
-  const {
-    modules,
-    loading: modulesLoading,
-    error,
-    getModules,
-  } = useGetModules();
-
-  useEffect(() => {
-    getModules(courseCode);
-  }, [courseCode]);
+  const { modules, loading: modulesLoading, error } = useGetModules(courseCode);
 
   if (modulesLoading) {
-    return <p className="text-snow">Loading modules...</p>;
+    return <Loading />;
   }
 
   if (error) {
@@ -41,12 +33,12 @@ const CourseModules: React.FC<CourseModulesProps> = ({ courseCode }) => {
       );
     } else if (fileType === "pdf") {
       return <embed src={url} width={800} height={900}></embed>;
-    } else {
-      return (
-        <a href={url} className="text-blue-500 underline">
-          {url}
-        </a>
-      );
+      // } else {
+      //   return (
+      //     <a href={url} className="text-blue-500 underline">
+      //       {url}
+      //     </a>
+      //   );
     }
   };
 
@@ -62,8 +54,11 @@ const CourseModules: React.FC<CourseModulesProps> = ({ courseCode }) => {
               <Accordion.Content className="text-sm">
                 <div className="text-snow">{module.description}</div>
                 {module.contentUrls.length > 0 ? (
-                  module.contentUrls.map((contentUrl) => (
-                    <div className="flex flex-col justify-center p-8 gap-4">
+                  module.contentUrls.map((contentUrl, index) => (
+                    <div
+                      key={index}
+                      className="flex flex-col justify-center p-8 gap-4"
+                    >
                       {renderContent(contentUrl)}
                     </div>
                   ))
@@ -75,9 +70,9 @@ const CourseModules: React.FC<CourseModulesProps> = ({ courseCode }) => {
           ))}
         </Accordion>
       ) : (
-          <h1 className="flex text-snow poppins-semibold text-xl">
-            No Modules Available
-          </h1>
+        <h1 className="flex text-snow poppins-semibold text-xl">
+          No Modules Available
+        </h1>
       )}
     </div>
   );

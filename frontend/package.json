@@ -17,6 +17,7 @@
     "google-auth-library": "^9.9.0",
     "jsonwebtoken": "^9.0.2",
     "jwt-decode": "^4.0.0",
+    "lottie-react": "^2.4.0",
     "lucide-react": "^0.376.0",
     "mongoose": "^8.3.3",
     "react": "^18.2.0",

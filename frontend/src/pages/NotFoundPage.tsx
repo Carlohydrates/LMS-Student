@@ -1,12 +1,10 @@
-import { Link } from "react-router-dom";
+import Lottie from "lottie-react";
+import NotFoundAnimation from "../../public/NotFoundAnimation.json";
 
 export const NotFoundPage = () => {
   return (
-    <div className="flex bg-black_olive w-screen h-screen text-snow">
-      <div className="m-auto text-justify">
-        <h1 className="text-3xl poppins-semibold">PAGE NOT FOUND</h1>
-        <Link to="/" className="text-xl poppins-regular hover:text-black_olive-800 underline">Go Back</Link>
-      </div>
+    <div className="flex items-center justify-center bg-verdigris w-screen h-screen text-black flex-col space-y-4">
+        <Lottie animationData={NotFoundAnimation} className="w-1/2 h-1/2"></Lottie>
     </div>
   );
 };

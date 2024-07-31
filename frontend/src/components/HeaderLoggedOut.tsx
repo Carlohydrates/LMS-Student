@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 const HeaderLoggedOut = () => {
   const navigate = useNavigate();
   return (
-    <div className="flex sticky top-0 h-16 w-full bg-black_olive py-4 px-4 justify-between">
+    <div className="flex sticky top-0 h-16 w-full bg-black_olive py-4 px-4 justify-between z-10">
       <img
         src="/LMS-LOGO.png"
         alt="LMS logo"

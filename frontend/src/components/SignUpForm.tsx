@@ -35,7 +35,7 @@ const SignUpForm = () => {
   }, [error]);
 
   return (
-    <div className="flex size-fit py-8 px-16 shadow-lg shadow-black bg-snow rounded-xl my-auto mx-auto">
+    <div className="flex size-fit py-8 px-12 shadow-lg shadow-black bg-snow rounded-xl">
       <div className="flex mx-auto my-auto">
         <div className="flex flex-col mx-auto my-auto w-full sm:w-80 justify-center">
           <div className="flex w-full justify-center p-4">

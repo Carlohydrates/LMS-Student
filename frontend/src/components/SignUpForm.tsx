@@ -1,5 +1,5 @@
 import { Button, Label, TextInput } from "flowbite-react";
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { useSignup } from "../hooks/useSignup";
 import { GoogleLogin } from "@react-oauth/google";
 import { useGoogleSignup } from "../hooks/useGoogleSignup";
@@ -28,9 +28,11 @@ const SignUpForm = () => {
     }
   };
 
-  if (error) {
-    toast.error(error);
-  }
+  useEffect(() => {
+    if (error) {
+      toast.error(error);
+    }
+  }, [error]);
 
   return (
     <div className="flex size-fit py-8 px-16 shadow-lg shadow-black bg-snow rounded-xl my-auto mx-auto">

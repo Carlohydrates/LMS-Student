@@ -1,6 +1,6 @@
 import { GoogleLogin } from "@react-oauth/google";
 import { Button, Label, TextInput } from "flowbite-react";
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useGoogleLogin } from "../hooks/useGoogleLogin";
@@ -28,13 +28,11 @@ const LoginForm = () => {
     }
   };
 
-  // if (isLoading) {
-  //   return <Loading />;
-  // }
-
-  if (error) {
-    toast.error(error);
-  }
+  useEffect(() => {
+    if (error) {
+      toast.error(error);
+    }
+  }, [error]);
 
   return (
     <div className="flex size-fit py-8 px-16 shadow-lg shadow-black bg-snow rounded-xl my-auto mx-auto">

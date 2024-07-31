@@ -9,7 +9,7 @@ const SignUpForm = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [username, setUsername] = useState<string>("");
-  const { signup } = useSignup();
+  const { signup, isLoading, error } = useSignup();
   const { googleSignup } = useGoogleSignup();
   const signupUser = async (e: FormEvent) => {
     e.preventDefault();
@@ -27,6 +27,10 @@ const SignUpForm = () => {
       await signup(email, username, password);
     }
   };
+
+  if (error) {
+    toast.error(error);
+  }
 
   return (
     <div className="flex size-fit py-8 px-16 shadow-lg shadow-black bg-snow rounded-xl my-auto mx-auto">
@@ -83,10 +87,10 @@ const SignUpForm = () => {
               <Button
                 data-testid="register-button"
                 type="submit"
-                // disabled={isLoading!}
+                disabled={isLoading!}
                 className="bg-verdigris-500"
               >
-                SIGNUP
+                { isLoading ? "Signing up..." : "SIGNUP ACCOUNT" }
               </Button>
               <div className="flex items-center p-2">
                 <div className="flex-grow bg-black_olive h-[0.05rem]"></div>

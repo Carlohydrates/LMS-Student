@@ -1,7 +1,6 @@
 import { useState } from "react";
-import { useAuthContext } from "./useAuthContext";
 import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
+import { useAuthContext } from "./useAuthContext";
 
 export const useLogin = () => {
   const [error, setError] = useState(null);
@@ -24,10 +23,7 @@ export const useLogin = () => {
       });
 
       if (!response.ok) {
-        toast.error("Invalid credentials");
         const errorData = await response.json();
-        setError(errorData.error);
-        setIsLoading(true);
         throw new Error(errorData.error);
       }
 
@@ -41,10 +37,12 @@ export const useLogin = () => {
 
       navigate("/dashboard");
 
-      setIsLoading(false);
     } catch (error: any) {
-      setIsLoading(true);
+      console.error("Error logging in:", error.message);
       setError(error.message);
+    }
+    finally {
+      setIsLoading(false)
     }
   };
 

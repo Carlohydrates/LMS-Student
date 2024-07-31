@@ -25,7 +25,6 @@ export const useSignup = () => {
 
       if (!response.ok) {
         const errorData = await response.json();
-        toast.error("Error signing up.");
         throw new Error(errorData.error);
       } else {
         const { user } = await response.json();
@@ -39,14 +38,15 @@ export const useSignup = () => {
         setIsLoading(false);
       }
     } catch (error: any) {
-      setIsLoading(true);
+      console.error("Error signing in:", error.message);
       setError(error.message);
+    } finally {
+      setIsLoading(false);
     }
   };
   return {
     signup,
     isLoading,
     error,
-    setError,
   };
 };

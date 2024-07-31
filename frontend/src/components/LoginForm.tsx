@@ -9,7 +9,7 @@ import { useLogin } from "../hooks/useLogin";
 const LoginForm = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const { login } = useLogin();
+  const { login, isLoading, error } = useLogin();
   const { googleLogin } = useGoogleLogin();
   const loginUser = async (e: FormEvent) => {
     e.preventDefault();
@@ -28,18 +28,13 @@ const LoginForm = () => {
     }
   };
 
-  // const toastNotification = () => {
-  //   const toastMessage = error || googleError || null;
-  //   if (toastMessage) {
-  //     toast.error(toastMessage);
-  //   }
-  // };
+  // if (isLoading) {
+  //   return <Loading />;
+  // }
 
-  // useEffect(() => {
-  //   if (error || googleError) {
-  //     toastNotification();
-  //   }
-  // }, [error, googleError]);
+  if (error) {
+    toast.error(error);
+  }
 
   return (
     <div className="flex size-fit py-8 px-16 shadow-lg shadow-black bg-snow rounded-xl my-auto mx-auto">
@@ -84,10 +79,10 @@ const LoginForm = () => {
               <Button
                 data-testid="login-button"
                 type="submit"
-                // disabled={isLoading!}
+                disabled={isLoading!}
                 className="bg-verdigris-500"
               >
-                LOGIN
+                { isLoading ? "Logging in..." : "LOGIN" }
               </Button>
               <div className="flex items-center p-2">
                 <div className="flex-grow bg-black_olive h-[0.05rem]"></div>

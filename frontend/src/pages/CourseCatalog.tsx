@@ -13,10 +13,6 @@ const Courses = () => {
   const { courses } = useGetCourses();
   const { tier: userTier, loading, error } = useGetUserTier(user._id);
 
-  if (loading) {
-    return <Loading />;
-  }
-
   if (error) {
     toast.error(error);
   }
@@ -27,8 +23,9 @@ const Courses = () => {
         <SideNav />
         <div className="flex flex-col lg:w-screen lg:h-screen overflow-y-auto bg-black_olive pb-20">
           <HeaderLoggedIn />
-
-          {courses ? (
+          {loading ? (
+            <Loading />
+          ) : courses ? (
             <>
               <div className="flex mx-auto p-8 text-2xl text-snow poppins-semibold">
                 All Courses

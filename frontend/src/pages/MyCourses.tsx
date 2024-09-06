@@ -13,10 +13,6 @@ const MyCourses = () => {
   const { user } = useAuthContext();
   const { courses, loading, error } = useGetCourses();
 
-  if (loading) {
-    return <Loading />;
-  }
-
   if (error) {
     toast.error(error);
   }
@@ -27,8 +23,9 @@ const MyCourses = () => {
         <SideNav />
         <div className="flex flex-col lg:w-screen lg:h-screen overflow-y-auto bg-black_olive pb-20">
           <HeaderLoggedIn />
-
-          {courses ? (
+          {loading ? (
+            <Loading />
+          ) : courses ? (
             <>
               <div className="flex mx-auto p-8 text-2xl text-snow poppins-semibold">
                 Enrolled Courses

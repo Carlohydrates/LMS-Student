@@ -17,7 +17,7 @@ const CourseInfo = () => {
   const { id: courseCode } = params;
   const {
     course,
-    loading: loadingCourses,
+    loading: loadingCourse,
     error: coursesError,
   } = useGetCourse(courseCode!);
   const {
@@ -29,28 +29,22 @@ const CourseInfo = () => {
   const { unenrollUser } = useUnenrollUser();
   const navigate = useNavigate();
 
-  if (loadingCourses || loadingEnrollees) {
-    return <Loading />;
-  }
-  
   if (coursesError) {
     toast.error(coursesError);
   }
   if (enrolleesError) {
     toast.error(enrolleesError);
   }
-  
-  if (!course) {
-    return <NotFoundPage />;
-  } 
 
-  if (enrollees && course) {
-    // Check if the course is published and the user is enrolled
-    const userEnrolled = enrollees.some(
-      (enrollee) => enrollee._id === user._id
-    );
-    if (!course.isPublished || !userEnrolled) {
-      return <NotFoundPage />;
+  if (!loadingCourse && !loadingEnrollees) {
+    if (enrollees && course) {
+      // Check if the course is published and the user is enrolled
+      const userEnrolled = enrollees.some(
+        (enrollee) => enrollee._id === user._id
+      );
+      if (!course.isPublished || !userEnrolled) {
+        return <NotFoundPage />;
+      }
     }
   }
 
@@ -60,8 +54,9 @@ const CourseInfo = () => {
         <SideNav />
         <div className="flex flex-col lg:w-screen lg:h-screen overflow-y-auto bg-black_olive">
           <HeaderLoggedIn />
-
-          {course && (
+          {loadingCourse || loadingEnrollees ? (
+            <Loading />
+          ) : course ? (
             <>
               <div className="flex flex-col lg:w-11/12 mx-auto min-h-fit p-4 pb-12 rounded-lg my-10 poppins-regular gap-4">
                 <Tabs style="underline">
@@ -135,6 +130,8 @@ const CourseInfo = () => {
                 </Tabs>
               </div>
             </>
+          ) : (
+            <NotFoundPage />
           )}
         </div>
       </NavContext.Provider>
